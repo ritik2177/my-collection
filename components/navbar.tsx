@@ -1,16 +1,14 @@
 "use client";
+
 import React, { useState } from "react";
-import { cn } from "@/lib/utils"; // classnames helper
+import RegisterModal from "@/components/modal";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
-    <nav
-      className={cn(
-        "fixed top-4 left-4 right-4 z-50 bg-white/10 backdrop-blur border border-gray-200 rounded-lg shadow-md mx-0 md:mx-28"
-      )}
-    >
+    <nav className="fixed top-4 left-4 right-4 z-50 bg-white/10 backdrop-blur border border-gray-200 rounded-lg shadow-md mx-0 md:mx-28">
       <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
         {/* Left: Company name */}
         <div className="text-2xl font-bold text-gray-800">MyCompany</div>
@@ -39,34 +37,23 @@ export default function Navbar() {
 
         {/* Right: Desktop login button */}
         <div className="hidden md:block">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+          <button
+            onClick={() => setOpenModal(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
             Login
           </button>
+          <RegisterModal open={openModal} handleClose={() => setOpenModal(false)} />
         </div>
 
-        {/* Mobile Hamburger Toggle */}
+        {/* Mobile Toggle Button */}
         <div className="md:hidden">
           <button
             aria-label="Toggle menu"
-            className="p-2 rounded hover:bg-gray-200 transition"
+            className="p-2 text-2xl"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {/* Hamburger icon (three lines) */}
-            <svg
-              className="w-6 h-6 text-gray-800"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              {mobileMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" /> // X icon
-              ) : (
-                <path d="M3 12h18M3 6h18M3 18h18" /> // Hamburger icon
-              )}
-            </svg>
+            {mobileMenuOpen ? "✖" : "☰"}
           </button>
         </div>
       </div>
@@ -97,7 +84,10 @@ export default function Navbar() {
               Dashboard
             </a>
             <button
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setOpenModal(true);
+              }}
               className="mt-2 bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition"
             >
               Login

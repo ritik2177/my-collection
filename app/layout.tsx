@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Providers } from './provider'; 
+import SpeedDialMenu from "@/components/SpeedDialMenu";
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers> 
           <Navbar />
           {children}
+          <SpeedDialMenu /> 
           <Footer />
         </Providers>
       </body>

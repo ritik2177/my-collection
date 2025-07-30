@@ -9,9 +9,6 @@ export default function Home() {
   //  npm i mongoose      
   
   
-//   MONGODB_URI=mongodb+srv://ritik123:ritik1234@cluster0.ekoze50.mongodb.net/
-// NEXTAUTH_SECRET=sdlakefslkhd
-// JWT_SECRET=heleakjflsdjk
 
 
   return (
