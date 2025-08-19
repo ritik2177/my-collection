@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 
 export default function Home() {
 
@@ -6,14 +7,19 @@ export default function Home() {
   // npm install --save-dev @types/jsonwebtoken
   // npm i bcryptjs
   // npm install next-auth
-  //  npm i mongoose      
+  //  npm i mongoose  
+  // npm install @mui/material @emotion/react @emotion/styled  
+  // npm install @mui/icons-material  
+  //npm install material-ui-popup-state 
+  //npm install lucide-react
+  //npm install zod
   
   
 
 
   return (
     <div>
-      <div className="relative bg-[url('/image/background-image.png')] bg-cover bg-center h-screen text-white">
+      <div className="relative bg-[url('/image/background-image.jpg')] bg-cover bg-center h-screen text-white">
 
         {/* Content */}
         <div className="flex flex-col justify-center h-full px-6 md:px-16">
@@ -68,15 +74,30 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition duration-300">
-            <img src="/image/image2.jpeg" className="w-full h-48 object-cover" />
+            <Image
+              src="/image/image2.jpeg"
+              alt="A tropical beach with palm trees and clear water"
+              width={400}
+              height={192}
+              className="w-full h-48 object-cover" />
             <p className="p-4 text-center text-gray-700 font-medium">Tropical Beach</p>
           </div>
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition duration-300">
-            <img src="/image/image3.jpg" className="w-full h-48 object-cover" />
+            <Image
+              src="/image/image3.jpg"
+              alt="Misty mountains at sunrise"
+              width={400}
+              height={192}
+              className="w-full h-48 object-cover" />
             <p className="p-4 text-center text-gray-700 font-medium">Misty Mountains</p>
           </div>
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition duration-300">
-            <img src="/image/image4.jpg" className="w-full h-48 object-cover" />
+            <Image
+              src="/image/image4.jpg"
+              alt="A modern cityscape at night with illuminated skyscrapers"
+              width={400}
+              height={192}
+              className="w-full h-48 object-cover" />
             <p className="p-4 text-center text-gray-700 font-medium">Modern Cityscape</p>
           </div>
         </div>

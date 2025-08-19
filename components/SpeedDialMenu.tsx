@@ -1,14 +1,13 @@
 "use client";
-
 import * as React from "react";
 import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
+import ChatIcon from '@mui/icons-material/Chat';
 
 const actions = [
   { icon: <FileCopyIcon />, name: "Copy" },
@@ -22,7 +21,7 @@ export default function SpeedDialMenu() {
     <Box sx={{ position: "fixed", bottom: 16, right: 16, zIndex: 1300 }}>
       <SpeedDial
         ariaLabel="SpeedDial Menu"
-        icon={<SpeedDialIcon />}
+        icon={<ChatIcon />}
         direction="up"
       >
         {actions.map((action) => (

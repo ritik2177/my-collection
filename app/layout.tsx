@@ -1,25 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { Providers } from './provider'; 
+import { Providers } from "./provider";
 import SpeedDialMenu from "@/components/SpeedDialMenu";
-
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Providers> 
+        <Providers>
           <Navbar />
           {children}
           <SpeedDialMenu /> 
           <Footer />
+          <Toaster />
         </Providers>
       </body>
     </html>
   );
 }
-
-

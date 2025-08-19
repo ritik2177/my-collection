@@ -1,11 +1,12 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+// import GoogleProvider from "next-auth/providers/google";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/schema/user";
 import bcrypt from "bcryptjs";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
+
   session: { strategy: "jwt" },
 
   providers: [
@@ -16,23 +17,29 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) {
+          throw new Error("Invalid credentials");
+        }
+
         await dbConnect();
 
         const user = await User.findOne({
           $or: [
-            { email: credentials?.email },
-            { username: credentials?.email },
+            { email: credentials.email },
+            { username: credentials.email },
           ],
         });
 
-        if (!user) throw new Error("User not found");
+        if (!user) {
+          throw new Error("Invalid credentials");
+        }
 
         const isMatch = await bcrypt.compare(
-          credentials!.password,
+          credentials.password,
           user.password
         );
 
-        if (!isMatch) throw new Error("Invalid password");
+        if (!isMatch) throw new Error("Invalid credentials");
 
         return {
           id: user._id.toString(),
@@ -61,11 +68,9 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      session.user = token.user as {
-        id?: string;
-        name?: string | null;
-        email?: string | null;
-      };
+      if (token.user) {
+        session.user = token.user;
+      }
       return session;
     },
   },

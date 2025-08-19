@@ -8,7 +8,7 @@ interface Location {
 
 export interface IRoom extends Document {
     title: string;
-    description: string;
+    nearByCentre: string;
     address: {
         street: string;
         city: string;
@@ -31,7 +31,7 @@ const roomSchema = new Schema<IRoom>({
         type: String,
         required: true,
     },
-    description: {
+    nearByCentre: {
         type: String,
         required: true,
     },

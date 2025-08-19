@@ -15,7 +15,7 @@ export default function LoginPage() {
 
     console.log(res);
 
-    if (res?.ok) router.push("/dashboard");  // <-- redirect here
+    if (res?.ok) router.push("/dashboard");  
     else alert("Login failed");
   };
 
