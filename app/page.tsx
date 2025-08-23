@@ -13,6 +13,7 @@ export default function Home() {
   //npm install material-ui-popup-state 
   //npm install lucide-react
   //npm install zod
+  //npm i --save-dev @types/nodemailer
   
   
 
