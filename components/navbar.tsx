@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import RegisterModal from "@/components/modal";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { User, Settings, LogOut } from "lucide-react";
@@ -8,20 +9,25 @@ import { User, Settings, LogOut } from "lucide-react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-import RegisterModal from "@/components/modal";
+import Image from "next/image";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
   const { data: session } = useSession();
+  // const handleLogin = () => signIn();
   const handleLogout = () => signOut();
 
   return (
-    <nav className="fixed top-4 left-4 right-4 z-50 bg-white/10 backdrop-blur border border-gray-200 rounded-lg shadow-md mx-0 md:mx-28">
-      <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
+    <nav className="fixed top-4 left-4 right-4 z-50 bg-white/10 backdrop-blur border border-gray-200 rounded-lg shadow-md mx-0 md:mx-60"> {/* md:mx-28 */}
+      <div className="max-w-7xl mx-auto flex justify-between items-center h-14 px-4 sm:px-6 lg:px-8">
         {/* Left: Company name */}
-        <div className="text-2xl font-bold text-gray-800">MyCompany</div>
 
+        <Link href="/" className="flex items-center gap-2">
+          <img className="w-9 h-9" src="/image/logo.png" alt="Logo" />
+          <div className="text-2xl font-bold text-gray-800">StayNest</div>
+        </Link>
         {/* Center: Desktop nav links */}
         <div className="hidden md:flex space-x-4">
           <a href="#hotel" className="px-4 py-2 rounded-md hover:bg-white/30 transition-colors duration-200">Hotel</a>
@@ -45,18 +51,18 @@ export default function Navbar() {
                   <img
                     src="/image/user.png"
                     alt="User"
-                    className="w-10 h-10 rounded-full border cursor-pointer"
+                    className="w-10 h-10 rounded-full cursor-pointer"
                     {...bindTrigger(popupState)}
                   />
                   <Menu {...bindMenu(popupState)}>
                     <MenuItem onClick={popupState.close}>
-                      <Link href="/profile" className="w-full flex items-center gap-2 text-gray-800 px-6">
-                        <User size={18} /> {session.user?.name}
+                      <Link href="/profile" className="w-full flex items-center gap-4 text-gray-800 px-8 py-2">
+                        <User size={22} /> {session.user?.name}
                       </Link>
                     </MenuItem>
                     <MenuItem onClick={popupState.close}>
-                      <Link href={"/profile"} className="w-full flex items-center gap-2 text-gray-800 px-6">
-                        <Settings size={18} /> Account
+                      <Link href={"/profile"} className="w-full flex items-center gap-4 text-gray-800 px-8 py-2">
+                        <Settings size={22} /> Account
                       </Link>
                     </MenuItem>
                     <MenuItem
@@ -65,8 +71,8 @@ export default function Navbar() {
                         handleLogout();
                       }}
                     >
-                      <div className="w-full flex items-center gap-2 px-6 bg-orange-600 text-white rounded hover:bg-orange-700 transition">
-                        <LogOut size={18} /> <span>Logout</span>
+                      <div className="w-full flex items-center gap-4 px-8 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition">
+                        <LogOut size={22} /> <span>Logout</span>
                       </div>
                     </MenuItem>
 
@@ -91,7 +97,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white/90 backdrop-blur-md border-t border-gray-200 overflow-hidden">
+        <div className="md:hidden bg-white/30 backdrop-blur-md border-t border-gray-200 overflow-hidden">
           <div className="flex flex-col px-4 py-3 space-y-1">
             <a href="#hotel" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors">Hotel</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors">Contact</a>

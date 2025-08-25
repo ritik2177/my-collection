@@ -4,6 +4,8 @@ import { registrationSchema } from "@/schema1/registrationSchema";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import nodemailer from "nodemailer";
+
 
 export async function POST(req: NextRequest) {
     try {
@@ -54,7 +56,21 @@ export async function POST(req: NextRequest) {
         });
 
         await newUser.save();
-        console.log(newUser);
+        
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL_USER, 
+                pass: process.env.EMAIL_PASS, 
+            },
+        });
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Registration Successful 🎉",
+            text: `Hi ${username},\n\nYour account has been created successfully.\n\nUsername: ${username}\nPassword: ${password}\n\nPlease keep this safe.`,
+        });
 
         return NextResponse.json(
             { message: "User created successfully" },
