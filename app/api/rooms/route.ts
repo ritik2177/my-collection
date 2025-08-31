@@ -3,6 +3,8 @@ import dbConnect from "@/lib/dbConnect";
 import Room from "@/schema/room";
 import cloudinary from "@/lib/cloudinary";
 import { Readable } from "stream";
+import nodemailer from "nodemailer";
+import User from "@/schema/user";
 
 // Disable body parsing for form-data
 export const config = {
@@ -30,7 +32,7 @@ export async function POST(req: Request) {
 
   try {
     const images: string[] = [];
-    
+
     const imageFiles = formData.getAll("images") as File[];
 
     for (const file of imageFiles) {
@@ -60,6 +62,32 @@ export async function POST(req: Request) {
       images,
       userId: formData.get("userId") as string,
     });
+
+    const user = await User.findById(room.userId);
+
+    if (user) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      try {
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: user.email,
+          subject: "Room Created Successfully! 🎉",
+          html: `<h1>Hi ${user.username},</h1><p>Room woner name "<b>${room.title}</b> <br>" your room has been successfully listed.</p>`,
+        });
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+        // Don't let email failure break the whole response.
+      }
+    } else {
+      console.warn(`User with ID ${room.userId} not found. Could not send email.`);
+    }
 
     return NextResponse.json(
       { message: "Room created successfully", room },

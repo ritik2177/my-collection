@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           {children}
           <SpeedDialMenu /> 
-          <Footer />
+          {/* <Footer /> */}
           <Toaster />
         </Providers>
       </body>

@@ -20,19 +20,19 @@ export default function Navbar() {
   const handleLogout = () => signOut();
 
   return (
-    <nav className="fixed top-4 left-4 right-4 z-50 bg-white/10 backdrop-blur border border-gray-200 rounded-lg shadow-md mx-0 md:mx-60"> {/* md:mx-28 */}
+    <nav className="text-gray-800 fixed top-4 left-4 right-4 z-50 bg-orange-500/30 backdrop-blur border border-gray-200 rounded-lg shadow-md mx-0 md:mx-60"> {/* md:mx-28 */}
       <div className="max-w-7xl mx-auto flex justify-between items-center h-14 px-4 sm:px-6 lg:px-8">
         {/* Left: Company name */}
 
         <Link href="/" className="flex items-center gap-2">
           <img className="w-9 h-9" src="/image/logo.png" alt="Logo" />
-          <div className="text-2xl font-bold text-gray-800">StayNest</div>
+          <div className="text-2xl font-bold text-gray-600">StayNest</div>
         </Link>
         {/* Center: Desktop nav links */}
         <div className="hidden md:flex space-x-4">
           <a href="#hotel" className="px-4 py-2 rounded-md hover:bg-white/30 transition-colors duration-200">Hotel</a>
           <a href="#contact" className="px-4 py-2 rounded-md hover:bg-white/30 transition-colors duration-200">Contact</a>
-          <a href="#dashboard" className="px-4 py-2 rounded-md hover:bg-white/30 transition-colors duration-200">Dashboard</a>
+          <a href="/user-profile" className="px-4 py-2 rounded-md hover:bg-white/30 transition-colors duration-200">Dashboard</a>
         </div>
 
         {/* Right: Desktop buttons */}

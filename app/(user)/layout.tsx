@@ -9,6 +9,7 @@ import {
   UploadIcon,
   ImageIcon,
 } from "lucide-react";
+import Footer from "@/components/footer";
 
 const sidebarItems = [
   { href: "/", icon: LayoutDashboardIcon, label: "Home Page" },
@@ -23,22 +24,22 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const [active, setActive] = useState(pathname); // default from current route
+  const [active, setActive] = useState(pathname);
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside className="bg-gray-700 text-white h-screen flex flex-col w-20 md:w-64 transition-all duration-300 pt-20">
+      {/* Sidebar (hidden on mobile, shown from md+) */}
+      <aside className="hidden md:flex bg-purple-500 text-white h-screen flex-col w-20 md:w-64 transition-all duration-300 pt-20">
         <ul className="menu p-2 flex-grow">
           {sidebarItems.map((item) => (
             <li key={item.href} className="mb-2">
               <Link
                 href={item.href}
-                onClick={() => setActive(item.href)} // 🔑 set clicked as active
+                onClick={() => setActive(item.href)}
                 className={`flex items-center space-x-4 px-3 py-2 rounded-lg ${
                   active === item.href
-                    ? "bg-red-500 text-white"
-                    : "hover:bg-gray-600"
+                    ? "bg-purple-600 text-white"
+                    : "hover:bg-purple-700"
                 }`}
               >
                 <item.icon className="w-6 h-6" />
@@ -50,7 +51,7 @@ export default function AppLayout({
       </aside>
 
       {/* Page Content */}
-      <main className="flex-grow overflow-y-auto p-6 bg-base-100 mt-20">
+      <main className="flex-grow overflow-y-auto p-0 bg-base-100">
         {children}
       </main>
     </div>
