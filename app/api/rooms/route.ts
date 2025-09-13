@@ -8,11 +8,10 @@ import User from "@/schema/user";
 
 // Disable body parsing for form-data
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+  api: { bodyParser: false },
 };
 
+// Upload image buffer → Cloudinary
 function uploadToCloudinary(buffer: Buffer): Promise<string> {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -31,18 +30,21 @@ export async function POST(req: Request) {
   const formData = await req.formData();
 
   try {
+    // Upload images
     const images: string[] = [];
-
     const imageFiles = formData.getAll("images") as File[];
-
     for (const file of imageFiles) {
       const buffer = Buffer.from(await file.arrayBuffer());
       const uploadedImageUrl = await uploadToCloudinary(buffer);
       images.push(uploadedImageUrl);
     }
 
+    // Extract location safely
+    const latitude = formData.get("currentlatitude");
+    const longitude = formData.get("currentlongitude");
+
     const room = await Room.create({
-      title: formData.get("title") as string,
+      roomOwner: formData.get("roomOwner") as string,
       nearByCentre: formData.get("nearByCentre") as string,
       address: {
         street: formData.get("street") as string,
@@ -52,19 +54,19 @@ export async function POST(req: Request) {
       },
       pricePerHour: Number(formData.get("pricePerHour")),
       currentlocation: {
-        latitude: Number(formData.get("currentlatitude")),
-        longitude: Number(formData.get("currentlongitude")),
+        latitude: latitude ? Number(latitude) : null,
+        longitude: longitude ? Number(longitude) : null,
       },
-
-      amenities: JSON.parse(formData.get("amenities") as string),
-
+      amenities: formData.get("amenities")
+        ? JSON.parse(formData.get("amenities") as string)
+        : [],
       noOfPeople: Number(formData.get("noOfPeople")),
       images,
       userId: formData.get("userId") as string,
     });
 
+    // Email notification
     const user = await User.findById(room.userId);
-
     if (user) {
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -79,14 +81,12 @@ export async function POST(req: Request) {
           from: process.env.EMAIL_USER,
           to: user.email,
           subject: "Room Created Successfully! 🎉",
-          html: `<h1>Hi ${user.username},</h1><p>Room woner name "<b>${room.title}</b> <br>" your room has been successfully listed.</p>`,
+          html: `<h1>Hi ${user.username},</h1>
+                 <p>Your room "<b>${room.roomOwner}</b>" has been successfully listed.</p>`,
         });
       } catch (emailError) {
-        console.error("Failed to send confirmation email:", emailError);
-        // Don't let email failure break the whole response.
+        console.error("Email send failed:", emailError);
       }
-    } else {
-      console.warn(`User with ID ${room.userId} not found. Could not send email.`);
     }
 
     return NextResponse.json(
@@ -103,7 +103,15 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  await dbConnect();
-  const rooms = await Room.find().populate("userId", "username email");
-  return NextResponse.json({ rooms }, { status: 200 });
+  try {
+    await dbConnect();
+    const rooms = await Room.find().populate("userId", "username email");
+    return NextResponse.json({ success: true, rooms }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch rooms" },
+      { status: 500 }
+    );
+  }
 }

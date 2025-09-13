@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
-import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
+import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "sonner";
 import Footer from "@/components/footer";
@@ -18,7 +18,7 @@ export default function NewRoom() {
   const [loadingRoom, setLoadingRoom] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: "",
+    roomOwner: "",
     nearByCentre: "",
     street: "",
     city: "",
@@ -89,17 +89,17 @@ export default function NewRoom() {
         if (img) data.append("images", img);
       });
       Object.keys(formData).forEach((key) => {
-        if (key === "amenities") {
+        if (key === 'amenities') {
           data.append("amenities", JSON.stringify(formData.amenities));
         } else {
-          data.append(key, (formData as any)[key]);
+          data.append(key, String(formData[key as keyof typeof formData]));
         }
       });
       data.append("userId", session.user.id);
 
       if (location) {
-        data.append("latitude", location.latitude.toString());
-        data.append("longitude", location.longitude.toString());
+        data.append("currentlatitude", location.latitude.toString());
+        data.append("currentlongitude", location.longitude.toString());
       }
 
       const res = await fetch("/api/rooms", {
@@ -112,7 +112,7 @@ export default function NewRoom() {
 
         // reset form
         setFormData({
-          title: "",
+          roomOwner: "",
           nearByCentre: "",
           street: "",
           city: "",
@@ -200,8 +200,8 @@ export default function NewRoom() {
               className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full md:w-[265px]"
               type="text"
               placeholder="e.g., Ram lal yadav"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              value={formData.roomOwner}
+              onChange={(e) => setFormData({ ...formData, roomOwner: e.target.value })}
             />
             <h4 className="text-black text-1xl font-semibold mt-4 ">
               Nearby Centre
@@ -350,7 +350,7 @@ export default function NewRoom() {
               </>
             ) : (
               <>
-                <AddLocationAltOutlinedIcon />
+                <RoomRoundedIcon />
                 <span>ADD LOCATION</span>
               </>
             )}
@@ -368,7 +368,7 @@ export default function NewRoom() {
               </>
             ) : (
               <>
-                <AddHomeOutlinedIcon />
+                <HomeRoundedIcon />
                 <span>ADD YOUR ROOM</span>
               </>
             )}

@@ -5,6 +5,9 @@ import RegisterModal from "@/components/modal";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { User, Settings, LogOut } from "lucide-react";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -90,7 +93,11 @@ export default function Navbar() {
             className="p-2 text-2xl"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? "✖" : "☰"}
+            {mobileMenuOpen ? (
+              <CloseIcon className="text-white" fontSize="large" />
+            ) : (
+              <MenuIcon className="text-white" fontSize="large" />
+            )}
           </button>
         </div>
       </div>
@@ -115,9 +122,7 @@ export default function Navbar() {
               </button>
             ) : (
               <>
-                <Link href="/profile" onClick={() => setMobileMenuOpen(false)} className="mt-2 bg-blue-600 text-white rounded px-4 py-2 text-center hover:bg-blue-700 transition">
-                  Profile
-                </Link>
+                
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
