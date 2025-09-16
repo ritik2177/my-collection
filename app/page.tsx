@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image';
 import { FlipWords } from "@/components/ui/flip-words";
-import Footer from '@/components/footer';
 
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -14,25 +13,8 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
+import { useState } from 'react';
 
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', color: 'white' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor: '#6b21a8', // Tailwind's purple-700
-  color: 'white',             // makes text white
-  flexDirection: 'row-reverse',
-  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]: {
-    transform: 'rotate(90deg)',
-  },
-  [`& .${accordionSummaryClasses.content}`]: {
-    marginLeft: theme.spacing(1),
-    color: 'white', // ensures Typography inside is also white
-  },
-}));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -42,13 +24,11 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export default function Home() {
   const words = ["stay", "rest-room", "pleace", "on-center"];
 
-  const [expanded, setExpanded] = React.useState<string | false>('panel1');
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false);
-    };
-
+  const [openPanel, setOpenPanel] = useState<string | null>("panel1");
+  
+    const togglePanel = (panel: string) => {
+      setOpenPanel(openPanel === panel ? null : panel);
+    }
   // npm install --save-dev @types/jsonwebtoken
   // npm i bcryptjs
   // npm install next-auth
@@ -65,7 +45,7 @@ export default function Home() {
 
 
   return (
-    <div>
+    <>
       <div className="relative bg-[url('/image/background-image.jpg')] bg-cover bg-center h-screen text-white">
 
         {/* Content */}
@@ -141,48 +121,110 @@ export default function Home() {
       </div>
 
       <div className="container mx-auto px-4 pt-18">
-        <h3 data-aos="fade-up" className='text-5xl text-center font-bold text-purple-700 mb-4'>Who we are</h3>
-        <p data-aos="fade-up" data-aos-delay="300" className='text-center text-gray-600 mt-4 md:px-30'>
-          We are a dedicated platform created especially for students who travel across cities to appear for competitive and university exams. We understand how stressful it can be to find a place to rest before an important test.
-        </p>
-        <div data-aos="fade-up" data-aos-delay="600"  className='flex flex-wrap mt-2 w-full py-10 justify-center items-center'>
-          <div className='w-full md:w-5/12 flex justify-center items-center'>
-            <img className='' src="/image/home1.png" alt="" />
-          </div>
-          <div className='w-full md:w-7/12 flex flex-col justify-center items-center'>
-            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-              <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography component="span">Stress-Free Stays for Exam Travelers</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  We are a dedicated platform created especially for students who travel across cities to appear for competitive and university exams. We understand how stressful it can be to find a place to rest before an important test..
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-              <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                <Typography component="span">Affordable, Comfortable Rooms Near Exams</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Our mission is simple: to provide affordable, short-term, and comfortable stays near exam centers so students can relax, refresh, and focus entirely on their performance. Instead of spending a lot on hotels or struggling with last-minute arrangements, students can book a clean and peaceful room with us in just a few clicks.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-              <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                <Typography component="span">Verified, Safe, Student-Friendly Rooms</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Every room we list is verified, safe, and student-friendly. With us, you don’t just get a place to sleep—you get a supportive environment that values your preparation, time, and peace of mind.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          </div>
+  <h3
+    data-aos="fade-up"
+    className="text-5xl text-center font-bold text-purple-700 mb-4"
+  >
+    Who we are
+  </h3>
+  <p
+    data-aos="fade-up"
+    data-aos-delay="300"
+    className="text-center text-gray-600 mt-4 md:px-30"
+  >
+    We are a dedicated platform created especially for students who travel
+    across cities to appear for competitive and university exams. We
+    understand how stressful it can be to find a place to rest before an
+    important test.
+  </p>
+
+  <div
+    data-aos="fade-up"
+    data-aos-delay="600"
+    className="flex flex-wrap mt-2 w-full py-10 justify-center items-center"
+  >
+    {/* Left side image */}
+    <div className="w-full md:w-5/12 flex justify-center items-center">
+      <img src="/image/home1.png" alt="" />
+    </div>
+
+    {/* Right side accordion */}
+    <div className="w-full md:w-7/12 flex flex-col justify-center items-center">
+      <div className="w-full max-w-4xl space-y-4">
+        {/* Panel 1 */}
+        <div className="border rounded-lg shadow w-full">
+          <button
+            className={`w-full flex justify-between items-center p-4 text-left font-semibold text-lg text-white rounded-t-lg ${
+              openPanel === "panel1"
+                ? "bg-purple-700"
+                : "bg-purple-600 hover:bg-purple-700"
+            }`}
+            onClick={() => togglePanel("panel1")}
+          >
+            Stress-Free Stays for Exam Travelers
+            <span>{openPanel === "panel1" ? "−" : "+"}</span>
+          </button>
+          {openPanel === "panel1" && (
+            <div className="p-4 text-gray-700 bg-purple-50">
+              We are a dedicated platform created especially for students who
+              travel across cities to appear for competitive and university
+              exams. We understand how stressful it can be to find a place to
+              rest before an important test..
+            </div>
+          )}
+        </div>
+
+        {/* Panel 2 */}
+        <div className="border rounded-lg shadow w-full">
+          <button
+            className={`w-full flex justify-between items-center p-4 text-left font-semibold text-lg text-white rounded-t-lg ${
+              openPanel === "panel2"
+                ? "bg-purple-700"
+                : "bg-purple-600 hover:bg-purple-700"
+            }`}
+            onClick={() => togglePanel("panel2")}
+          >
+            Affordable, Comfortable Rooms Near Exams
+            <span>{openPanel === "panel2" ? "−" : "+"}</span>
+          </button>
+          {openPanel === "panel2" && (
+            <div className="p-4 text-gray-700 bg-purple-50">
+              Our mission is simple: to provide affordable, short-term, and
+              comfortable stays near exam centers so students can relax,
+              refresh, and focus entirely on their performance. Instead of
+              spending a lot on hotels or struggling with last-minute
+              arrangements, students can book a clean and peaceful room with us
+              in just a few clicks.
+            </div>
+          )}
+        </div>
+
+        {/* Panel 3 */}
+        <div className="border rounded-lg shadow w-full">
+          <button
+            className={`w-full flex justify-between items-center p-4 text-left font-semibold text-lg text-white rounded-t-lg ${
+              openPanel === "panel3"
+                ? "bg-purple-700"
+                : "bg-purple-600 hover:bg-purple-700"
+            }`}
+            onClick={() => togglePanel("panel3")}
+          >
+            Verified, Safe, Student-Friendly Rooms
+            <span>{openPanel === "panel3" ? "−" : "+"}</span>
+          </button>
+          {openPanel === "panel3" && (
+            <div className="p-4 text-gray-700 bg-purple-50">
+              Every room we list is verified, safe, and student-friendly. With
+              us, you don’t just get a place to sleep—you get a supportive
+              environment that values your preparation, time, and peace of mind.
+            </div>
+          )}
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
 
       <div className="max-w-6xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold text-center text-blue-700 mb-6">Dream Destination</h1>
@@ -221,8 +263,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Footer />
-    </div>
+    </>
 
   );
 }

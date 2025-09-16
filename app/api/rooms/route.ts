@@ -105,7 +105,9 @@ export async function POST(req: Request) {
 export async function GET() {
   try {
     await dbConnect();
-    const rooms = await Room.find().populate("userId", "username email");
+    const rooms = await Room.find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "username email");
     return NextResponse.json({ success: true, rooms }, { status: 200 });
   } catch (error) {
     console.error("Error fetching rooms:", error);
