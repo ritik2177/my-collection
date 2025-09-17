@@ -105,7 +105,7 @@ export default function Page() {
 
   return (
     <div className="w-full min-h-screen bg-gray-100 p-4 flex justify-center">
-      {/* ✅ Main container */}
+      {/*  Main container */}
       <div className="w-full mt-20 max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
         {/* Sidebar Filters */}
         <div className="w-full md:w-64 border-b md:border-b-0 md:border-r p-4">
