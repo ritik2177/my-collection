@@ -45,14 +45,11 @@ const authOptions: NextAuthOptions = {
           id: user._id.toString(),
           email: user.email,
           name: user.username,
+          mobile: user.mobile,
         };
       },
     }),
 
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID!,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    // }),
   ],
 
   callbacks: {
@@ -62,6 +59,7 @@ const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
+          mobile: user.mobile,
         };
       }
       return token;

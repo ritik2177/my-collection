@@ -1,104 +1,568 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { FaWifi, FaTv, FaParking, FaUsers, FaMapMarkerAlt } from "react-icons/fa";
+import dynamic from "next/dynamic";
+import TvIcon from '@mui/icons-material/Tv';
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import { User, Phone, Mail, Users, Star, X } from "lucide-react";
+import { FanIcon, AirVentIcon, WifiIcon } from "lucide-react";
+import { toast } from "sonner";
+import Image from "next/image";
+
+
+import PayButton from "@/components/RazorpayButton";
+import { IRoom } from "@/schema/room";
+import { IReview } from "@/schema/review";
+
+// Define interfaces for populated data to ensure type safety
+interface IPopulatedUser {
+  _id: string;
+  username: string;
+  email: string;
+  mobilenumber?: string;
+}
+
+interface IPopulatedReview extends Omit<IReview, 'userId'> {
+  userId: IPopulatedUser;
+}
+
+interface IRoomDetails extends Omit<IRoom, 'reviews' | 'userId'> {
+  reviews: IPopulatedReview[];
+  userId: IPopulatedUser;
+}
+
+const StudentStayMap = dynamic(() => import("@/components/StudentStayMap"), {
+  ssr: false,
+  loading: () => <p>Loading map...</p>,
+});
+
+const getAmenityDetails = (amenity: string) => {
+  const lower = amenity.toLowerCase();
+
+  switch (lower) {
+    case "wifi":
+      return { Icon: WifiIcon, label: "Free WiFi" };
+    case "ac":
+    case "air conditioner":
+      return { Icon: AirVentIcon, label: "AC" };
+    case "tv":
+    case "smart tv":
+      return { Icon: TvIcon, label: "Smart TV" };
+    case "parking":
+      return { Icon: LocalParkingIcon, label: "Free Parking" };
+    case "fan":
+      return { Icon: FanIcon, label: "Fan" };
+    default:
+      return { Icon: null, label: amenity };
+  }
+};
 
 export default function RoomDetailPage() {
   const { id } = useParams();
-  const [room, setRoom] = useState<any>(null);
+  const { data: session, status } = useSession();
+  const [room, setRoom] = useState<IRoomDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBooking, setIsBooking] = useState(false);
+
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingData, setBookingData] = useState({
+    startTime: '',
+    endTime: '',
+    totalCost: 0, // Initialize totalCost here
+    fullName: '',
+    noOfPeople: '',
+    enrollmentNumber: '',
+    address: '',
+  });
 
   useEffect(() => {
-    async function fetchRoom() {
+    const fetchRoom = async () => {
+      if (!id) return;
+      setLoading(true);
       try {
         const res = await fetch(`/api/rooms/${id}`);
         const data = await res.json();
         if (data.success) {
           setRoom(data.room);
+          if (data.room.images && data.room.images.length > 0) {
+            setSelectedImage(data.room.images[0]);
+          }
+        } else {
+          toast.error(data.message || "Failed to fetch room details.");
         }
       } catch (err) {
         console.error("Failed to fetch room", err);
       } finally {
         setLoading(false);
       }
-    }
-    if (id) fetchRoom();
+    };
+
+    fetchRoom();
   }, [id]);
 
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!session?.user) {
+      toast.error("You must be logged in to write a review.");
+      return;
+    }
+    if (rating === 0 || comment.trim() === "") {
+      toast.error("Please provide a rating and a comment.");
+      return;
+    }
+
+      setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rating,
+          comment,
+          userId: session.user.id,
+          roomId: id,
+        }),
+      });
+      if (res.ok) {
+        toast.success("Review submitted successfully!");
+        setIsReviewModalOpen(false);
+        setRating(0);
+        setComment("");
+        // Optionally, you can refresh the room data to show the new review instantly
+        // fetchRoom(); 
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "Failed to submit review.");
+      }
+    } catch {
+      toast.error("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const [bookingId, setBookingId] = useState<string | null>(null);
+
+  const handleBookingSubmit = async () => {
+    setIsBooking(true);
+    // Validate booking data
+    if (!bookingData.startTime || !bookingData.endTime || !bookingData.fullName || !bookingData.noOfPeople || !bookingData.enrollmentNumber || !bookingData.address) {
+      toast.error("Please fill all the required fields.");
+      setIsBooking(false);
+      return;
+    }
+
+    // Calculate total hours and total cost, assuming room.pricePerHour is available
+    const start = new Date(bookingData.startTime);
+    const end = new Date(bookingData.endTime);
+    const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+    const cost = room ? hours * room.pricePerHour : 0;
+    
+
+    if (!session || !session.user) {
+      toast.error("You must be logged in to book a room.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: session.user.id as string, // The user making the booking
+          roomId: room ? room._id : null,
+          
+          startTime: bookingData.startTime,
+          endTime: bookingData.endTime,
+          totalHours: hours,
+          totalCost: cost,
+          fullName: bookingData.fullName,
+          noOfPeople: Number(bookingData.noOfPeople),
+          enrollmentNumber: bookingData.enrollmentNumber,
+          address: bookingData.address,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success("Booking details confirmed! Please proceed to payment.");
+        setBookingId(data.booking._id); // Store booking ID
+        // Set totalCost in state here, only after successful booking
+        setBookingData((prevState) => ({
+          ...prevState,
+          totalCost: cost,
+        }));
+      } else { 
+        toast.error(data.message || "Failed to create booking.");
+      }
+    } catch {
+      toast.error("An unexpected error occurred while creating the booking.");
+    } finally {
+      setIsBooking(false);
+    }
+  };
   if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return (<div className="flex items-center justify-center h-screen">
+      Loading...
+    </div>
+    )
   }
 
   if (!room) {
-    return <div className="flex items-center justify-center h-screen">Room not found</div>;
+
+    return ( // This will be shown if loading is false and room is still null
+      <div className="flex items-center justify-center h-screen">
+        Room not found
+      </div>
+    );
   }
 
+  const roomLocation = room?.currentlocation?.latitude && room?.currentlocation?.longitude ? {
+    lat: room.currentlocation.latitude,
+    lng: room.currentlocation.longitude,
+    name: room.roomOwner,
+    price: room.pricePerHour,
+    nearByCentre: room.nearByCentre,
+    id: room._id as string,
+  } : null;
+
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-3xl mt-10">
-      {/* Room Images */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        {room.images.map((img: string, index: number) => (
-          <img
-            key={index}
-            src={img}
-            alt={room.roomOwner}
-            className="w-full h-64 object-cover rounded-lg"
-          />
-        ))}
+    <div className="container mx-auto p-6 pt-20 ">
+      <div className="flex flex-col md:flex-row gap-2">
+        <div className="w-full md:w-8/12">
+          {/* Big Image */}
+          {selectedImage && (
+            <div className="relative w-full max-w-full h-[420px] mb-4 overflow-hidden bg-purple-50 rounded-2xl p-4 border-1 border-purple-300">
+              <Image
+                src={selectedImage}
+                alt="Selected"
+                layout="fill"
+                className="object-cover"
+              />
+            </div>
+          )}
+
+          {/* Thumbnails */}
+          <div className="flex gap-4 md:gap-6 flex-wrap">
+            {room.images?.slice(0, 4).map((img: string, index: number) => (
+              <Image
+                key={index}
+                src={img}
+                alt={`Thumbnail ${index + 1}`}
+                onClick={() => setSelectedImage(img)}
+                className={`w-18 md:w-28 h-18 object-cover p-2 cursor-pointer border-1 bg-purple-50 rounded-xl 
+              ${selectedImage === img
+                    ? "border-purple-800"
+                    : "border-transparent"
+                  }`}
+                width={112}
+                height={72}
+              />
+            ))}
+          </div>
+        </div>
+        {/* Room woner and map */}
+        <div className="flex flex-col md:w-4/12 pt-1 rounded-lg justify-center ">
+          {/* map */}
+          <div className="w-full h-[320px] bg-purple-50 p-4 rounded-xl mb-4 border border-purple-200 overflow-hidden z-10">
+            <h2 className="text-xl font-bold mb-2 text-purple-800">Room Location</h2>
+            <div className="w-full h-[250px] overflow-hidden">
+              {roomLocation ? (
+                <StudentStayMap locations={[roomLocation]} />
+              ) : (
+                <p>Location not available.</p>
+              )}
+            </div>
+          </div>
+          {/* owner Details */}
+          <div className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-200">
+            <h3 className="text-xl font-bold text-purple-800 mb-4">Owner Details</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <User className="w-5 h-5 text-purple-800" />
+                <span className="text-gray-900 font-medium">{room.roomOwner}</span>
+              </div>
+              {room.userId?.mobilenumber && (
+                <div className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-purple-800" />
+                  <span className="text-gray-800">{room.userId.mobilenumber}</span>
+                </div>
+              )}
+              {room.userId?.email && (
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-purple-800" />
+                  <a href={`mailto:${room.userId.email}`} className="text-gray-800 hover:text-purple-900 hover:underline">{room.userId.email}</a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* Room Info */}
-      <h1 className="text-3xl font-bold mb-2">{room.nearByCentre}</h1>
-      <p className="text-gray-600 mb-4">
-        Owned by <span className="font-semibold">{room.roomOwner}</span>
-      </p>
-
-      <p className="text-gray-600 mb-2">
-        {room.address.street}, {room.address.city}, {room.address.state},{" "}
-        {room.address.pincode}
-      </p>
-
-      <div className="flex items-center gap-4 text-gray-600 mb-4">
-        <FaUsers className="text-lg" /> <span>{room.noOfPeople} People</span>
-        {room.currentlocation?.latitude && room.currentlocation?.longitude && (
-          <a
-            href={`https://www.google.com/maps?q=${room.currentlocation.latitude},${room.currentlocation.longitude}`}
-            target="_blank"
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            <FaMapMarkerAlt className="mr-1" /> View on Map
-          </a>
-        )}
+      {/* address */}
+      <div className="flex justify-between flex-wrap">
+        <div>
+          <p className="text-sm text-purple-600 font-semibold tracking-wider uppercase mt-8 mb-2">Room Details</p>
+          <h3 className="text-4xl font-bold text-purple-800 font-sans">{room.nearByCentre}</h3>
+          <h5 className="text-lg mt-2 text-gray-600 font-sans">Address: {room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</h5>
+        </div>
+        <div className="mt-6 flex flex-col gap-2">
+          <button
+            onClick={() => {
+              if (status !== 'authenticated') {
+                toast.error("Please log in to book a room.");
+                return;
+              }
+              setIsBookingModalOpen(true);
+            }}
+            className="px-38 py-4 rounded-2xl text-white font-semibold bg-gradient-to-r from-purple-800 to-pink-700 shadow-lg hover:opacity-90 transition">
+            Book now
+          </button >
+          <button
+            onClick={() => {
+              if (status !== 'authenticated') {
+                toast.error("Please log in to write a review.");
+                return;
+              }
+              setIsReviewModalOpen(true)
+            }} className="px-38 py-4 rounded-2xl text-purple-800 font-semibold bg-white border-2 border-purple-800 shadow-lg hover:bg-purple-50 transition">
+            Write a Review
+          </button>
+        </div>
       </div>
-
       {/* Amenities */}
-      <h2 className="text-xl font-semibold mt-4 mb-2">Amenities</h2>
-      <div className="flex flex-wrap gap-4">
-        {room.amenities.includes("wifi") && (
-          <div className="flex items-center text-gray-700">
-            <FaWifi className="mr-1 text-blue-500" /> Free WiFi
+      <div className="mt-8">
+        <h4 className="text-2xl font-bold text-purple-800 mb-4">What this place offers</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {room.amenities.map((amenity: string, index: number) => {
+            const { Icon, label } = getAmenityDetails(amenity);
+            return (
+              <div key={index} className="flex flex-col items-center justify-center gap-2 p-4 border border-purple-200 rounded-xl bg-purple-50 hover:bg-white hover:shadow-md transition-all">
+                {Icon && <Icon className="w-8 h-8 text-purple-700" />}
+                <span className="text-sm font-medium text-gray-700 text-center">{label}</span>
+              </div>
+            );
+          })}
+          {/* Number of People Card */}
+          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-purple-200 rounded-xl bg-purple-50 hover:bg-white hover:shadow-md transition-all">
+            <Users className="w-8 h-8 text-purple-700" />
+            <span className="text-sm font-medium text-gray-700 text-center">{room.noOfPeople} People</span>
           </div>
-        )}
-        {room.amenities.includes("TV") && (
-          <div className="flex items-center text-gray-700">
-            <FaTv className="mr-1 text-gray-500" /> Smart TV
+          {/* Distance Card */}
+          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-purple-200 rounded-xl bg-purple-50 hover:bg-white hover:shadow-md transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-700"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" x2="4" y1="22" y2="15"></line></svg>
+            <span className="text-sm font-medium text-gray-700 text-center">{room.dist_btw_room_and_centre}m away</span>
           </div>
-        )}
-        {room.amenities.includes("parking") && (
-          <div className="flex items-center text-gray-700">
-            <FaParking className="mr-1 text-green-500" /> Free Parking
-          </div>
-        )}
+        </div>
+        <h3 className="text-2xl font-bold text-purple-800 mt-6 mb-4 text-center">Reviews</h3>
+        <div className="flex flex-wrap">
+          {room.reviews && room.reviews.length > 0 ? (
+            room.reviews.map((review: IPopulatedReview) => (
+
+
+
+              <div key={String(review._id)} className="w-[290px] mr-4 mt-4 bg-gradient-to-br from-purple-100 via-white to-purple-50 rounded-2xl shadow-lg border border-purple-200 p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-purple-200">
+                    <User className="w-8 h-8 text-purple-700" />
+                  </div> 
+                  <div>
+                    <p className="font-semibold text-lg text-purple-800">{review.userId?.username || 'Anonymous'}</p>
+                    <p className="text-sm text-gray-500 flex items-center gap-1">
+                      <Mail className="w-4 h-4 text-gray-400" /> {review.userId?.email || 'No email'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className="flex items-center gap-1 mt-3">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-5 h-5 ${star <= review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                        }`}
+                    />
+                  ))}
+                  <span className="ml-2 text-sm font-medium text-gray-600">{review.rating.toFixed(1)}/5</span>
+                </div>
+
+                {/* Review Text */}
+                <p className="text-gray-700 text-sm leading-relaxed mt-3">
+                  “{review.comment}”
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="w-full text-center text-gray-500 mt-4">No reviews yet. Be the first to write one!</p>
+          )}
+        </div>
       </div>
 
-      {/* Price */}
-      <div className="flex justify-between items-center mt-6">
-        <p className="text-xl font-bold text-green-600">₹{room.pricePerHour} / hour</p>
-        <button className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700">
-          Book Now
-        </button>
-      </div>
+      {/* Review Modal */}
+      {isReviewModalOpen && (
+        <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md relative">
+            <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+              <X className="w-6 h-6" />
+            </button>
+            <h2 className="text-2xl font-bold text-purple-800 mb-4">Write a Review</h2>
+            <form onSubmit={handleReviewSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2">Your Rating</label>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-8 h-8 cursor-pointer transition-colors ${rating >= star ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 hover:text-yellow-300'}`}
+                      onClick={() => setRating(star)}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="mb-6">
+                <label htmlFor="comment" className="block text-gray-700 font-semibold mb-2">Your Review</label>
+                <textarea
+                  id="comment"
+                  rows={4}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Tell us about your experience..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                ></textarea>
+              </div>
+              <button type="submit" disabled={isSubmitting} className="w-full py-3 rounded-lg text-white font-semibold bg-purple-600 hover:bg-purple-700 transition disabled:bg-purple-400">
+                {isSubmitting ? 'Submitting...' : 'Submit Review'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Booking Modal */}
+      {isBookingModalOpen && (
+        <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl w-auto h-auto relative">
+            <button onClick={() => { setIsBookingModalOpen(false); setBookingId(null); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+              <X className="w-6 h-6" />
+            </button>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (!bookingId) handleBookingSubmit();
+            }}>
+              <div className="flex flex-col md:flex-row gap-6">
+                {/* Left side: Image and Details */}
+                <div className="w-full md:w-64">
+                  <div className="relative h-40 w-full object-cover rounded-2xl overflow-hidden">
+                    <Image src={room.images[0]} alt="room image" layout="fill" className="object-cover" />
+                  </div>
+                  <p className="text-gray-600 italic text-sm mt-2">ROOM DETAILS</p>
+                  <p className="font-bold text-xl text-purple-800">{room.nearByCentre}</p>
+                  <p className="text-md font-semibold text-green-600">₹{room.pricePerHour} / hour</p>
+                  <p className="text-sm text-gray-700">{room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</p>
+
+                  {/* Booking Summary - shown after booking is created */}
+                  {bookingId && bookingData.totalCost > 0 && (
+                    <div className="mt-4 border-t pt-2">
+                      <h3 className="text-md font-bold text-purple-800 mb-1">Booking Summary</h3>
+                      <div className="text-left text-xs space-y-1">
+                        <p><strong>From:</strong> {new Date(bookingData.startTime).toLocaleString()}</p>
+                        <p><strong>To:</strong> {new Date(bookingData.endTime).toLocaleString()}</p>
+                        <p><strong>Total Stay:</strong> {((new Date(bookingData.endTime).getTime() - new Date(bookingData.startTime).getTime()) / (1000 * 60 * 60)).toFixed(1)} hours</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Divider */}
+                <div className="border-t md:border-t-0 md:border-l border-gray-200 my-4 md:my-0 md:mx-4"></div>
+
+                {/* Right side: Form inputs */}
+                <div className="flex-1">
+                <h2 className="text-2xl font-bold text-purple-800 mb-4">{bookingId ? 'Complete Your Payment' : 'Book Your Stay'}</h2>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-gray-700 font-semibold mb-1 text-sm">Full Name</label>
+                      <input type="text" placeholder="Your full name" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                        onChange={(e) => setBookingData({ ...bookingData, fullName: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-semibold mb-1 text-sm">No. of People</label>
+                      <input type="number" placeholder="e.g., 2" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                        onChange={(e) => setBookingData({ ...bookingData, noOfPeople: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-semibold mb-1 text-sm">Enrollment/Roll No.</label>
+                      <input type="text" placeholder="Exam roll number" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                        onChange={(e) => setBookingData({ ...bookingData, enrollmentNumber: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-semibold mb-1 text-sm">Permanent Address</label>
+                      <input type="text" placeholder="Your home address" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                        onChange={(e) => setBookingData({ ...bookingData, address: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="w-full">
+                      <label className="block text-gray-700 font-semibold mb-2">Start Time</label>
+                      <input
+                        type="datetime-local"
+                        className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        onChange={(e) => {
+                          const newStartTime = e.target.value;
+                          setBookingData({ ...bookingData, startTime: newStartTime });
+                        }}
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label className="block text-gray-700 font-semibold mb-2">End Time</label>
+                      <input
+                        type="datetime-local"
+                        className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        onChange={(e) => {
+                          const newEndTime = e.target.value;
+                          setBookingData({ ...bookingData, endTime: newEndTime });
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    {bookingId ? (
+                      <>
+                        {bookingData.totalCost > 0 ? (
+                          <div className="text-center mt-4">
+                            {/* <p className="mb-2 text-xl font-semibold">Total Cost: ₹{bookingData.totalCost.toFixed(2)}</p> */}
+                            <PayButton amount={bookingData.totalCost} bookingId={bookingId} />
+                          </div>
+                        ) : <p className="text-center">Calculating cost...</p>}
+                      </>
+                    ) : (
+                      <button
+                        type="submit"
+                        disabled={isBooking}
+                        className="w-full py-3 rounded-lg text-white font-semibold bg-purple-600 hover:bg-purple-700 transition disabled:bg-purple-400 disabled:cursor-not-allowed"
+                      >
+                        {isBooking ? 'Confirming...' : 'Confirm & Proceed'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

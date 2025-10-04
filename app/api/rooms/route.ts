@@ -6,6 +6,7 @@ import { Readable } from "stream";
 import nodemailer from "nodemailer";
 import User from "@/schema/user";
 
+
 // Disable body parsing for form-data
 export const config = {
   api: { bodyParser: false },
@@ -63,8 +64,18 @@ export async function POST(req: Request) {
       noOfPeople: Number(formData.get("noOfPeople")),
       images,
       userId: formData.get("userId") as string,
+      description: formData.get("description") ? String(formData.get("description")) : "",
+      dist_btw_room_and_centre: Number(
+        formData.get("dist_btw_room_and_centre")
+      ),
     });
 
+    // console.log("desc" + room.description);
+    // console.log("dis" + room.dist_btw_room_and_centre);
+
+
+    const now = new Date();
+    const dateTime = now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
     // Email notification
     const user = await User.findById(room.userId);
     if (user) {
@@ -82,7 +93,7 @@ export async function POST(req: Request) {
           to: user.email,
           subject: "Room Created Successfully! 🎉",
           html: `<h1>Hi ${user.username},</h1>
-                 <p>Your room "<b>${room.roomOwner}</b>" has been successfully listed.</p>`,
+                 <p>Your room "<b>${room.roomOwner}</b>" has been successfully listed.</p> \n ${dateTime}`,
         });
       } catch (emailError) {
         console.error("Email send failed:", emailError);

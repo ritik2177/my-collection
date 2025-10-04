@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const sendEmail = async () => {
     setLoading(true);

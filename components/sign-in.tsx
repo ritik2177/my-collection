@@ -36,7 +36,7 @@ export default function Login({ handleClose }: { handleClose: () => void }) {
         
         {/* Logo and Company Name (Top-Left) */}
         <div className="absolute top-4 left-4 flex items-center gap-2 ">
-          <img src="/image/logo.png" className="w-8 h-8" alt="logo" />
+          <Image src="/image/logo.png" className="w-8 h-8" alt="logo" width={32} height={32} />
           <p className="text-black text-lg font-semibold">StayNest</p>
         </div>
 

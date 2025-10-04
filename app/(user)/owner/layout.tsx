@@ -4,18 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboardIcon,
-  Share2Icon,
-  UploadIcon,
-  ImageIcon,
+  HomeIcon,
 } from "lucide-react";
-import Footer from "@/components/footer";
 
 const sidebarItems = [
-  { href: "/", icon: LayoutDashboardIcon, label: "Home Page" },
-  { href: "/user-profile", icon: ImageIcon, label: "User Profile" },
-  { href: "/booked-room", icon: Share2Icon, label: "Booked Room" },
-  { href: "/new-room", icon: UploadIcon, label: "New Room" },
+  { href: "/owner", icon: HomeIcon, label: "Owner" },
+  { href: "/owner/new-room", label: "New room" },
+
 ];
 
 export default function AppLayout({
@@ -42,7 +37,11 @@ export default function AppLayout({
                     : "hover:bg-purple-700"
                 }`}
               >
-                <item.icon className="w-6 h-6" />
+                {item.icon ? (
+                  <item.icon className="w-6 h-6" />
+                ) : (
+                  <span className="w-6 h-6"></span>
+                )}
                 <span className="hidden md:inline">{item.label}</span>
               </Link>
             </li>

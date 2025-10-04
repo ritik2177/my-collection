@@ -1,12 +1,26 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "sonner";
-import Footer from "@/components/footer";
+
+interface IFormData {
+  roomOwner: string;
+  nearByCentre: string;
+  street: string;
+  city: string;
+  state: string;
+  pincode: string;
+  noOfPeople: string;
+  pricePerHour: string;
+  description: string;
+  dist_btw_room_and_centre: string;
+  amenities: string[];
+}
 
 export default function NewRoom() {
   const { data: session } = useSession();
@@ -17,7 +31,7 @@ export default function NewRoom() {
   const [loadingLocation, setLoadingLocation] = useState(false);
   const [loadingRoom, setLoadingRoom] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IFormData>({
     roomOwner: "",
     nearByCentre: "",
     street: "",
@@ -27,6 +41,7 @@ export default function NewRoom() {
     noOfPeople: "",
     pricePerHour: "",
     description: "",
+    dist_btw_room_and_centre: "",
     amenities: [] as string[],
   });
 
@@ -63,12 +78,13 @@ export default function NewRoom() {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
-        toast.success("Location added ✅");
+        toast.success("Location added ");
         setLoadingLocation(false);
       },
       (error) => {
-        toast.error("Failed to get location ❌");
+        toast.error("Failed to get location ");
         setLoadingLocation(false);
+        console.error(error);
       }
     );
   };
@@ -89,10 +105,10 @@ export default function NewRoom() {
         if (img) data.append("images", img);
       });
       Object.keys(formData).forEach((key) => {
-        if (key === 'amenities') {
+        if (key === "amenities") {
           data.append("amenities", JSON.stringify(formData.amenities));
         } else {
-          data.append(key, String(formData[key as keyof typeof formData]));
+          data.append(key, formData[key as keyof Omit<IFormData, 'amenities'>]);
         }
       });
       data.append("userId", session.user.id);
@@ -108,7 +124,7 @@ export default function NewRoom() {
       });
 
       if (res.ok) {
-        toast.success("Room added successfully ✅");
+        toast.success("Room added successfully ");
 
         // reset form
         setFormData({
@@ -121,17 +137,18 @@ export default function NewRoom() {
           noOfPeople: "",
           pricePerHour: "",
           description: "",
+          dist_btw_room_and_centre: "",
           amenities: [],
         });
         setPreviews([null, null, null, null]);
         setImages([null, null, null, null]);
         setLocation(null);
       } else {
-        toast.error("Failed to add room ❌");
+        toast.error("Failed to add room ");
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong ❌");
+      toast.error("Something went wrong ");
     } finally {
       setLoadingRoom(false);
     }
@@ -166,9 +183,11 @@ export default function NewRoom() {
                     className="w-28 aspect-square border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden"
                   >
                     {previews[i] ? (
-                      <img
+                      <Image
                         src={previews[i] ?? ""}
                         alt={`Preview ${i + 1}`}
+                        width={112}
+                        height={112}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -191,26 +210,45 @@ export default function NewRoom() {
             </div>
           </div>
 
-          {/* Room Title */}
-          <div className="w-full md:w-4/12 md:mt-8">
-            <h4 className="text-black text-1xl font-semibold mt-6 ">
-              Room owner full Name
-            </h4>
-            <input
-              className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full md:w-[265px]"
-              type="text"
-              placeholder="e.g., Ram lal yadav"
-              value={formData.roomOwner}
-              onChange={(e) => setFormData({ ...formData, roomOwner: e.target.value })}
-            />
+          {/* Room roomOwner */}
+          <div className="w-full md:w-5/12 md:mt-8 flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="w-full sm:w-1/2">
+                <h4 className="text-black text-1xl font-semibold">
+                  Room owner full Name
+                </h4>
+                <input
+                  className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full"
+                  type="text"
+                  placeholder="e.g., Ram lal yadav"
+                  value={formData.roomOwner}
+                  required
+                  onChange={(e) => setFormData({ ...formData, roomOwner: e.target.value })}
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <h4 className="text-black text-1xl font-semibold">
+                  Distance (in meters)
+                </h4>
+                <input
+                  className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full"
+                  type="text"
+                  value={formData.dist_btw_room_and_centre}
+                  onChange={(e) =>
+                    setFormData({ ...formData, dist_btw_room_and_centre: e.target.value })
+                  }
+                />
+              </div>
+            </div>
             <h4 className="text-black text-1xl font-semibold mt-4 ">
               Nearby Centre
             </h4>
             <input
-              className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full md:w-[265px]"
+              className="border-2 border-gray-400 rounded-md p-2 w-full"
               type="text"
               placeholder="e.g., ION Digital Zone"
               value={formData.nearByCentre}
+              required
               onChange={(e) =>
                 setFormData({ ...formData, nearByCentre: e.target.value })
               }
@@ -346,7 +384,7 @@ export default function NewRoom() {
             {loadingLocation ? (
               <>
                 <CircularProgress size={20} color="inherit" />
-                <span>Fetching...</span>
+                <span>Fetching Location...</span>
               </>
             ) : (
               <>
@@ -364,7 +402,7 @@ export default function NewRoom() {
             {loadingRoom ? (
               <>
                 <CircularProgress size={20} color="inherit" />
-                <span>Adding...</span>
+                <span>Adding Room...</span>
               </>
             ) : (
               <>
@@ -375,7 +413,7 @@ export default function NewRoom() {
           </button>
         </div>
       </form>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

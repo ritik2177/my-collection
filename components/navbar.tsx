@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 import RegisterModal from "@/components/modal";
 import { useSession, signOut } from "next-auth/react";
@@ -26,31 +27,31 @@ export default function Navbar() {
       {/* Removed max-w-7xl mx-auto so content goes edge to edge */}
       <div className="flex justify-between items-center h-14 px-4 sm:px-6 lg:px-8">
         {/* Left: Company logo/name */}
-        <Link href="/" className="flex items-center gap-2">
-          <img className="w-9 h-9" src="/image/logo.png" alt="Logo" />
+        <Link href="/" className="flex items-center gap-2 text-white">
+          <Image className="w-9 h-9" src="/image/logo.png" alt="Logo" width={36} height={36} />
           <div className="text-2xl font-bold text-white">StayNest</div>
         </Link>
 
         {/* Center: Desktop nav links */}
         <div className="hidden md:flex space-x-4 text-white">
-          <a
+          <Link
             href="/rooms"
             className="px-4 py-2 rounded-md transition-colors duration-200"
           >
             Rooms
-          </a>
+          </Link>
           <a
             href="#contact"
             className="px-4 py-2 rounded-md transition-colors duration-200"
           >
             Contact
           </a>
-          <a
+          <Link
             href="/user-profile"
             className="px-4 py-2 rounded-md transition-colors duration-200"
           >
             Dashboard
-          </a>
+          </Link>
         </div>
 
         {/* Right: Desktop buttons */}
@@ -136,13 +137,13 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/30 backdrop-blur-md overflow-hidden">
           <div className="flex flex-col px-4 py-3 space-y-1 text-white">
-            <a
+            <Link
               href="/rooms"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
               Rooms
-            </a>
+            </Link>
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
