@@ -138,7 +138,7 @@ export default function DashboardPage() {
           ) : (
             <div className="space-y-4">
               {bookings.map((booking) => (
-                <Link href={`/rooms/${booking.roomId.toString()}`} key={String(booking._id)} className="block">
+                <Link href={`/rooms/${booking.roomId._id}`} key={String(booking._id)} className="block">
                   <div className="bg-white rounded-lg shadow-md p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-gray-200 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
                     <div className="flex-1 min-w-0">
                       <p className="text-lg font-bold text-purple-800 truncate hover:underline" title={booking.roomId.nearByCentre}>
