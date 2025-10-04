@@ -21,7 +21,7 @@ export async function GET(
       return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
     }
 
-    const bookings = await Booking.find({ userId }).sort({ createdAt: -1 }).populate('roomId', 'nearByCentre totalHours totalCost');
+    const bookings = await Booking.find({ userId }).sort({ createdAt: -1 }).populate('roomId', 'nearByCentre');
 
     return NextResponse.json({ success: true, bookings }, { status: 200 });
   } catch (error) {

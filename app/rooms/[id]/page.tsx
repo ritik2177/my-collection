@@ -33,6 +33,16 @@ interface IRoomDetails extends Omit<IRoom, 'reviews' | 'userId'> {
   userId: IPopulatedUser;
 }
 
+interface IBookingFormData {
+  startTime: string;
+  endTime: string;
+  totalCost: number;
+  fullName: string;
+  noOfPeople: string;
+  enrollmentNumber: string;
+  address: string;
+}
+
 const StudentStayMap = dynamic(() => import("@/components/StudentStayMap"), {
   ssr: false,
   loading: () => <p>Loading map...</p>,
@@ -72,8 +82,8 @@ export default function RoomDetailPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
 
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [bookingData, setBookingData] = useState({
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false); 
+  const [bookingData, setBookingData] = useState<IBookingFormData>({
     startTime: '',
     endTime: '',
     totalCost: 0, // Initialize totalCost here
