@@ -132,7 +132,7 @@ export default function OwnerPage() {
   }
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8 lg:pt-20 bg-gray-50 min-h-full">
+    <div className="container mx-auto p-4 sm:p-6 sm:pt-20 lg:p-8 lg:pt-20 bg-gray-50 min-h-full">
       
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold text-purple-800">My Rooms</h1>
@@ -142,7 +142,7 @@ export default function OwnerPage() {
         </Link>
       </div>
 
-      <div className="w-8/12">
+      <div className="w-full md:w-8/12">
         <p className="text-gray-600 mb-4 font-bold"> Welcome to your Room Owner Dashboard! 🏠</p>
         <p className="text-gray-600 mb-4"> This is your central hub to manage everything about your listed rooms. Easily add new rooms, edit details, and update availability with just a few clicks. Track your bookings, monitor payment status, and stay informed about guest activity — all in real time. Simplify your management process and keep your listings active, attractive, and up-to-date effortlessly! 🌟</p>
       </div>

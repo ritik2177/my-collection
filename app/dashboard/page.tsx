@@ -78,8 +78,8 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="container w-full mx-auto p-4 sm:p-6 lg:p-8 lg:pt-30 flex flex-wrap">
-      <div className="w-5/12">
+    <div className="container w-full mx-auto p-4 sm:p-6 lg:p-8 lg:pt-30 flex flex-col md:flex-row gap-6">
+      <div className="w-full md:w-5/12">
       <div>
         <h1 className="text-4xl font-extrabold text-purple-600">Dashboard</h1>
         <h2 className="text-2xl font-bold text-purple-800 mt-6">Welcome, {session.user?.name}!</h2>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
         </Link>
         </div>
       </div>
-      <div className="w-7/12">
+      <div className="w-full md:w-7/12">
         <div className="container mx-auto p-4 pt-18">
           <h1 className="text-3xl font-bold text-purple-800 mb-6">My Bookings</h1>
           {bookings.length === 0 ? (
