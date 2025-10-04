@@ -162,7 +162,7 @@ export default function RoomDetailPage() {
   const [bookingId, setBookingId] = useState<string | null>(null);
 
   const handleBookingSubmit = async () => {
-    setIsBooking(true);
+    setIsBooking(true); // This can be used to disable the "Confirm & Proceed" button
     // Validate booking data
     if (!bookingData.startTime || !bookingData.endTime || !bookingData.fullName || !bookingData.noOfPeople || !bookingData.enrollmentNumber || !bookingData.address) {
       toast.error("Please fill all the required fields.");
@@ -175,7 +175,6 @@ export default function RoomDetailPage() {
     const end = new Date(bookingData.endTime);
     const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
     const cost = room ? hours * room.pricePerHour : 0;
-    
 
     if (!session || !session.user) {
       toast.error("You must be logged in to book a room.");
@@ -188,7 +187,6 @@ export default function RoomDetailPage() {
         body: JSON.stringify({
           userId: session.user.id as string, // The user making the booking
           roomId: room ? room._id : null,
-          
           startTime: bookingData.startTime,
           endTime: bookingData.endTime,
           totalHours: hours,
@@ -203,12 +201,12 @@ export default function RoomDetailPage() {
       if (res.ok) {
         toast.success("Booking details confirmed! Please proceed to payment.");
         setBookingId(data.booking._id); // Store booking ID
-        // Set totalCost in state here, only after successful booking
+        // Set totalCost in state here, only after successful booking creation
         setBookingData((prevState) => ({
           ...prevState,
           totalCost: cost,
         }));
-      } else { 
+      } else {
         toast.error(data.message || "Failed to create booking.");
       }
     } catch {
@@ -217,6 +215,7 @@ export default function RoomDetailPage() {
       setIsBooking(false);
     }
   };
+
   if (loading) {
     return (<div className="flex items-center justify-center h-screen">
       Loading...
