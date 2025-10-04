@@ -21,6 +21,11 @@ if (!cached) {
 }
 
 async function dbConnect(): Promise<Mongoose> {
+
+  if (!MONGODB_URI) {
+    console.warn(" MONGODB_URI not defined — skipping DB connection (likely build phase).");
+    return {} as Mongoose; // Return an empty Mongoose object or handle this case appropriately
+  }
   if (cached.conn) {
     return cached.conn;
   }
