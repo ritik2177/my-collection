@@ -29,7 +29,7 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className="relative overflow-hidden">
       <div className="relative bg-[url('/image/background-image.jpg')] bg-cover bg-center h-screen text-white">
 
         <div className="flex flex-col justify-end h-full px-6 md:px-16 md:pb-45 pb-20 ">
@@ -50,8 +50,8 @@ export default function Home() {
           </div>
 
           {/* Search Section */}
-          <div data-aos="fade-up" data-aos-delay="1200" className="w-full max-w-3xl bg-white/70 backdrop-blur-md rounded-xl p-4 shadow-lg">
-            <div className="flex flex-col md:flex-row gap-4 w-full">
+          <div data-aos="fade-up" data-aos-delay="1200" className="w-full max-w-3xl bg-white/70 dark:bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-lg">
+           <div className="flex flex-col md:flex-row gap-4 w-full">
 
               <input
                 type="text"
@@ -59,6 +59,7 @@ export default function Home() {
                 className="w-full p-3 rounded-md border border-gray-300 placeholder-gray-500 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={center}
                 onChange={(e) => setCenter(e.target.value)}
+                
               />
 
               <input
@@ -77,13 +78,14 @@ export default function Home() {
                 onChange={(e) => setGuests(e.target.value)}
               />
 
-              <button
-                className="w-full md:w-auto bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-md transition"
-                onClick={handleSearch}
-              >
-                Search
-              </button>
-
+              <div className="relative rounded-md">
+                <button
+                  className="w-full md:w-auto bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-md transition"
+                  onClick={handleSearch}
+                >
+                  Search
+                </button>
+              </div>
             </div>
           </div>
 

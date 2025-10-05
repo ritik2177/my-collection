@@ -247,7 +247,7 @@ export default function RoomDetailPage() {
         <div className="w-full md:w-8/12">
           {/* Big Image */}
           {selectedImage && (
-            <div className="relative w-full max-w-full h-[420px] mb-4 overflow-hidden bg-purple-50 rounded-2xl p-4 border-1 border-purple-300">
+            <div className="relative w-full max-w-full h-[420px] mb-4 overflow-hidden bg-gray-800 rounded-2xl p-4 border border-border">
               <Image
                 src={selectedImage}
                 alt="Selected"
@@ -265,9 +265,9 @@ export default function RoomDetailPage() {
                 src={img}
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => setSelectedImage(img)}
-                className={`w-18 md:w-28 h-18 object-cover p-2 cursor-pointer border-1 bg-purple-50 rounded-xl 
+                className={`w-18 md:w-28 h-18 object-cover p-2 cursor-pointer border bg-gray-800 rounded-xl 
               ${selectedImage === img
-                    ? "border-purple-800"
+                    ? "border-primary"
                     : "border-transparent"
                   }`}
                 width={112}
@@ -279,8 +279,8 @@ export default function RoomDetailPage() {
         {/* Room woner and map */}
         <div className="flex flex-col md:w-4/12 pt-1 rounded-lg justify-center ">
           {/* map */}
-          <div className="w-full h-[320px] bg-purple-50 p-4 rounded-xl mb-4 border border-purple-200 overflow-hidden z-10">
-            <h2 className="text-xl font-bold mb-2 text-purple-800">Room Location</h2>
+          <div className="w-full h-[320px] bg-gray-800 p-4 rounded-xl mb-4 border border-border overflow-hidden z-10">
+            <h2 className="text-xl font-bold mb-2 text-foreground">Room Location</h2>
             <div className="w-full h-[250px] overflow-hidden">
               {roomLocation ? (
                 <StudentStayMap locations={[roomLocation]} />
@@ -290,23 +290,23 @@ export default function RoomDetailPage() {
             </div>
           </div>
           {/* owner Details */}
-          <div className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-200">
-            <h3 className="text-xl font-bold text-purple-800 mb-4">Owner Details</h3>
+          <div className="bg-gray-800 p-5 rounded-xl shadow-sm border border-border">
+            <h3 className="text-xl font-bold text-foreground mb-4">Owner Details</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <User className="w-5 h-5 text-purple-800" />
-                <span className="text-gray-900 font-medium">{room.roomOwner}</span>
+                <User className="w-5 h-5 text-primary" />
+                <span className="text-foreground font-medium">{room.roomOwner}</span>
               </div>
               {room.userId?.mobilenumber && (
                 <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-purple-800" />
-                  <span className="text-gray-800">{room.userId.mobilenumber}</span>
+                  <Phone className="w-5 h-5 text-primary" />
+                  <span className="text-muted-foreground">{room.userId.mobilenumber}</span>
                 </div>
               )}
               {room.userId?.email && (
                 <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-purple-800" />
-                  <a href={`mailto:${room.userId.email}`} className="text-gray-800 hover:text-purple-900 hover:underline">{room.userId.email}</a>
+                  <Mail className="w-5 h-5 text-primary" />
+                  <a href={`mailto:${room.userId.email}`} className="text-muted-foreground hover:text-primary hover:underline">{room.userId.email}</a>
                 </div>
               )}
             </div>
@@ -316,9 +316,9 @@ export default function RoomDetailPage() {
       {/* address */}
       <div className="flex justify-between flex-wrap">
         <div>
-          <p className="text-sm text-purple-600 font-semibold tracking-wider uppercase mt-8 mb-2">Room Details</p>
-          <h3 className="text-4xl font-bold text-purple-800 font-sans">{room.nearByCentre}</h3>
-          <h5 className="text-lg mt-2 text-gray-600 font-sans">Address: {room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</h5>
+          <p className="text-sm text-primary font-semibold tracking-wider uppercase mt-8 mb-2">Room Details</p>
+          <h3 className="text-4xl font-bold text-foreground font-sans">{room.nearByCentre}</h3>
+          <h5 className="text-lg mt-2 text-muted-foreground font-sans">Address: {room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</h5>
         </div>
         <div className="mt-6 flex flex-col justify-center gap-2">
           <button
@@ -329,7 +329,7 @@ export default function RoomDetailPage() {
               }
               setIsBookingModalOpen(true);
             }}
-            className="px-38 py-4 rounded-2xl text-white font-semibold bg-gradient-to-r from-purple-800 to-pink-700 shadow-lg hover:opacity-90 transition">
+            className="px-38 py-4 rounded-2xl text-primary-foreground font-semibold bg-primary shadow-lg hover:bg-primary/90 transition">
             Book now
           </button >
           <button
@@ -339,7 +339,7 @@ export default function RoomDetailPage() {
                 return;
               }
               setIsReviewModalOpen(true)
-            }} className="px-38 py-4 rounded-2xl text-purple-800 font-semibold bg-white border-2 border-purple-800 shadow-lg hover:bg-purple-50 transition">
+            }} className="px-38 py-4 rounded-2xl text-secondary-foreground font-semibold bg-secondary shadow-lg hover:bg-secondary/80 transition">
             Write a Review
           </button>
         </div>
@@ -347,52 +347,52 @@ export default function RoomDetailPage() {
       
       {/* Amenities */}
       <div className="mt-8">
-        <h4 className="text-2xl font-bold text-purple-800 mb-4">What this place offers</h4>
+        <h4 className="text-2xl font-bold text-foreground mb-4">What this place offers</h4>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {room.amenities.map((amenity: string, index: number) => {
             const { Icon, label } = getAmenityDetails(amenity);
             return (
-              <div key={index} className="flex flex-col items-center justify-center gap-2 p-4 border border-purple-200 rounded-xl bg-purple-50 hover:bg-white hover:shadow-md transition-all">
-                {Icon && <Icon className="w-8 h-8 text-purple-700" />}
-                <span className="text-sm font-medium text-gray-700 text-center">{label}</span>
+              <div key={index} className="flex flex-col items-center justify-center gap-2 p-4 border border-border rounded-xl bg-gray-800 hover:bg-gray-700 hover:shadow-md transition-all">
+                {Icon && <Icon className="w-8 h-8 text-primary" />}
+                <span className="text-sm font-medium text-muted-foreground text-center">{label}</span>
               </div>
             );
           })}
           {/* Number of People Card */}
-          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-purple-200 rounded-xl bg-purple-50 hover:bg-white hover:shadow-md transition-all">
-            <Users className="w-8 h-8 text-purple-700" />
-            <span className="text-sm font-medium text-gray-700 text-center">{room.noOfPeople} People</span>
+          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-border rounded-xl bg-gray-800 hover:bg-gray-700 hover:shadow-md transition-all">
+            <Users className="w-8 h-8 text-primary" />
+            <span className="text-sm font-medium text-muted-foreground text-center">{room.noOfPeople} People</span>
           </div>
           {/* Distance Card */}
-          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-purple-200 rounded-xl bg-purple-50 hover:bg-white hover:shadow-md transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-700"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" x2="4" y1="22" y2="15"></line></svg>
-            <span className="text-sm font-medium text-gray-700 text-center">{room.dist_btw_room_and_centre}m away</span>
+          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-border rounded-xl bg-gray-800 hover:bg-gray-700 hover:shadow-md transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" x2="4" y1="22" y2="15"></line></svg>
+            <span className="text-sm font-medium text-muted-foreground text-center">{room.dist_btw_room_and_centre}m away</span>
           </div>
         </div>
         {/* About this room/Description */}
       {room.description && (
         <div className="mt-8 border-t border-gray-200 pt-6">
-          <h4 className="text-2xl font-bold text-purple-800 mb-3">About this room</h4>
-          <p className="text-gray-700 leading-relaxed">{room.description}</p>
+          <h4 className="text-2xl font-bold text-foreground mb-3">About this room</h4>
+          <p className="text-muted-foreground leading-relaxed">{room.description}</p>
         </div>
       )}
 
-        <h3 className="text-2xl font-bold text-purple-800 mt-6 mb-4 text-center">Reviews</h3>
-        <div className="flex flex-wrap justify-center">
+        <h3 className="text-2xl font-bold text-foreground mt-6 mb-4 text-center">Reviews</h3>
+        <div className="flex flex-wrap ">
           {room.reviews && room.reviews.length > 0 ? (
             room.reviews.map((review: IPopulatedReview) => (
 
 
 
-              <div key={String(review._id)} className="w-[290px] mr-4 mt-4 bg-gradient-to-br from-purple-100 via-white to-purple-50 rounded-2xl shadow-lg border border-purple-200 p-6">
+              <div key={String(review._id)} className="w-[290px] mr-4 mt-4 bg-gray-800 rounded-2xl shadow-lg border border-border p-6">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-purple-200">
-                    <User className="w-8 h-8 text-purple-700" />
+                  <div className="p-3 rounded-full bg-primary/10">
+                    <User className="w-8 h-8 text-primary" />
                   </div> 
                   <div>
-                    <p className="font-semibold text-lg text-purple-800">{review.userId?.username || 'Anonymous'}</p>
-                    <p className="text-sm text-gray-500 flex items-center gap-1">
-                      <Mail className="w-4 h-4 text-gray-400" /> {review.userId?.email || 'No email'}
+                    <p className="font-semibold text-lg text-foreground">{review.userId?.username || 'Anonymous'}</p>
+                    <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Mail className="w-4 h-4 text-muted-foreground" /> {review.userId?.email || 'No email'}
                     </p>
                   </div>
                 </div>
@@ -410,13 +410,13 @@ export default function RoomDetailPage() {
                 </div>
 
                 {/* Review Text */}
-                <p className="text-gray-700 text-sm leading-relaxed mt-3">
+                <p className="text-muted-foreground text-sm leading-relaxed mt-3">
                   “{review.comment}”
                 </p>
               </div>
             ))
           ) : (
-            <p className="w-full text-center text-gray-500 mt-4">No reviews yet. Be the first to write one!</p>
+            <p className="w-full text-center text-muted-foreground mt-4">No reviews yet. Be the first to write one!</p>
           )}
         </div>
       </div>
@@ -424,36 +424,36 @@ export default function RoomDetailPage() {
       {/* Review Modal */}
       {isReviewModalOpen && (
         <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md relative">
-            <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+          <div className="bg-card p-8 rounded-2xl shadow-2xl w-full max-w-md relative">
+            <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
               <X className="w-6 h-6" />
             </button>
-            <h2 className="text-2xl font-bold text-purple-800 mb-4">Write a Review</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Write a Review</h2>
             <form onSubmit={handleReviewSubmit}>
               <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2">Your Rating</label>
+                <label className="block text-foreground font-semibold mb-2">Your Rating</label>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`w-8 h-8 cursor-pointer transition-colors ${rating >= star ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 hover:text-yellow-300'}`}
+                      className={`w-8 h-8 cursor-pointer transition-colors ${rating >= star ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground hover:text-yellow-300'}`}
                       onClick={() => setRating(star)}
                     />
                   ))}
                 </div>
               </div>
               <div className="mb-6">
-                <label htmlFor="comment" className="block text-gray-700 font-semibold mb-2">Your Review</label>
+                <label htmlFor="comment" className="block text-foreground font-semibold mb-2">Your Review</label>
                 <textarea
                   id="comment"
                   rows={4}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full p-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Tell us about your experience..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 ></textarea>
               </div>
-              <button type="submit" disabled={isSubmitting} className="w-full py-3 rounded-lg text-white font-semibold bg-purple-600 hover:bg-purple-700 transition disabled:bg-purple-400">
+              <button type="submit" disabled={isSubmitting} className="w-full py-3 rounded-lg text-primary-foreground font-semibold bg-primary hover:bg-primary/90 transition disabled:opacity-70">
                 {isSubmitting ? 'Submitting...' : 'Submit Review'}
               </button>
             </form>
@@ -464,8 +464,8 @@ export default function RoomDetailPage() {
       {/* Booking Modal */}
       {isBookingModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
-            <button onClick={() => { setIsBookingModalOpen(false); setBookingId(null); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+          <div className="bg-gray-800 p-4 sm:p-8 rounded-2xl shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
+            <button onClick={() => { setIsBookingModalOpen(false); setBookingId(null); }} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
               <X className="w-6 h-6" />
             </button>
             <form onSubmit={(e) => {
@@ -478,15 +478,15 @@ export default function RoomDetailPage() {
                   <div className="relative h-40 w-full object-cover rounded-2xl overflow-hidden">
                     <Image src={room.images[0]} alt="room image" layout="fill" className="object-cover" />
                   </div>
-                  <p className="text-gray-600 italic text-sm mt-2">ROOM DETAILS</p>
-                  <p className="font-bold text-xl text-purple-800">{room.nearByCentre}</p>
+                  <p className="text-muted-foreground italic text-sm mt-2">ROOM DETAILS</p>
+                  <p className="font-bold text-xl text-foreground">{room.nearByCentre}</p>
                   <p className="text-md font-semibold text-green-600">₹{room.pricePerHour} / hour</p>
-                  <p className="text-sm text-gray-700">{room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</p>
+                  <p className="text-sm text-muted-foreground">{room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</p>
 
                   {/* Booking Summary - shown after booking is created */}
                   {bookingId && bookingData.totalCost > 0 && (
                     <div className="mt-4 border-t pt-2">
-                      <h3 className="text-md font-bold text-purple-800 mb-1">Booking Summary</h3>
+                      <h3 className="text-md font-bold text-foreground mb-1">Booking Summary</h3>
                       <div className="text-left text-xs space-y-1">
                         <p><strong>From:</strong> {new Date(bookingData.startTime).toLocaleString()}</p>
                         <p><strong>To:</strong> {new Date(bookingData.endTime).toLocaleString()}</p>
@@ -501,30 +501,30 @@ export default function RoomDetailPage() {
 
                 {/* Right side: Form inputs */}
                 <div className="flex-1">
-                <h2 className="text-2xl font-bold text-purple-800 mb-4">{bookingId ? 'Complete Your Payment' : 'Book Your Stay'}</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-4">{bookingId ? 'Complete Your Payment' : 'Book Your Stay'}</h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-1 text-sm">Full Name</label>
-                      <input type="text" placeholder="Your full name" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                      <label className="block text-foreground font-semibold mb-1 text-sm">Full Name</label>
+                      <input type="text" placeholder="Your full name" className="w-full p-2 bg-background border border-border rounded-lg text-sm"
                         onChange={(e) => setBookingData({ ...bookingData, fullName: e.target.value })}
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-1 text-sm">No. of People</label>
-                      <input type="number" placeholder="e.g., 2" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                      <label className="block text-foreground font-semibold mb-1 text-sm">No. of People</label>
+                      <input type="number" placeholder="e.g., 2" className="w-full p-2 bg-background border border-border rounded-lg text-sm"
                         onChange={(e) => setBookingData({ ...bookingData, noOfPeople: e.target.value })}
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-1 text-sm">Enrollment/Roll No.</label>
-                      <input type="text" placeholder="Exam roll number" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                      <label className="block text-foreground font-semibold mb-1 text-sm">Enrollment/Roll No.</label>
+                      <input type="text" placeholder="Exam roll number" className="w-full p-2 bg-background border border-border rounded-lg text-sm"
                         onChange={(e) => setBookingData({ ...bookingData, enrollmentNumber: e.target.value })}
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-1 text-sm">Permanent Address</label>
-                      <input type="text" placeholder="Your home address" className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                      <label className="block text-foreground font-semibold mb-1 text-sm">Permanent Address</label>
+                      <input type="text" placeholder="Your home address" className="w-full p-2 bg-background border border-border rounded-lg text-sm"
                         onChange={(e) => setBookingData({ ...bookingData, address: e.target.value })}
                       />
                     </div>
@@ -532,10 +532,10 @@ export default function RoomDetailPage() {
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <div className="w-full">
-                      <label className="block text-gray-700 font-semibold mb-2">Start Time</label>
+                      <label className="block text-foreground font-semibold mb-2">Start Time</label>
                       <input
                         type="datetime-local"
-                        className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full p-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                         onChange={(e) => {
                           const newStartTime = e.target.value;
                           setBookingData({ ...bookingData, startTime: newStartTime });
@@ -543,10 +543,10 @@ export default function RoomDetailPage() {
                       />
                     </div>
                     <div className="w-full">
-                      <label className="block text-gray-700 font-semibold mb-2">End Time</label>
+                      <label className="block text-foreground font-semibold mb-2">End Time</label>
                       <input
                         type="datetime-local"
-                        className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full p-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                         onChange={(e) => {
                           const newEndTime = e.target.value;
                           setBookingData({ ...bookingData, endTime: newEndTime });
@@ -569,7 +569,7 @@ export default function RoomDetailPage() {
                       <button
                         type="submit"
                         disabled={isBooking}
-                        className="w-full py-3 rounded-lg text-white font-semibold bg-purple-600 hover:bg-purple-700 transition disabled:bg-purple-400 disabled:cursor-not-allowed"
+                        className="w-full py-3 rounded-lg text-primary-foreground font-semibold bg-primary hover:bg-primary/90 transition disabled:opacity-70 disabled:cursor-not-allowed"
                       >
                         {isBooking ? 'Confirming...' : 'Confirm & Proceed'}
                       </button>

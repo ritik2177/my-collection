@@ -132,10 +132,10 @@ export default function OwnerPage() {
   }
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 pt-20 sm:pt-20 lg:p-8  lg:pt-20 bg-gray-50 min-h-full">
+    <div className="container mx-auto p-4 sm:p-6 pt-20 sm:pt-20 lg:p-8  lg:pt-20 min-h-full">
       
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl md:text-4xl font-bold text-purple-800">My Rooms</h1>
+      <div className="flex justify-between items-center mb-8 ">
+        <h1 className="text-2xl md:text-4xl font-bold text-foreground">My Rooms</h1>
         <Link href="/owner/new-room" className="px-4 md:px-6 py-2 md:py-3 bg-purple-600 text-white text-sm md:text-xl rounded-lg hover:bg-purple-700 transition shadow-md flex items-center gap-2">
           <BedDouble size={20} />
           <span>List a New Room</span>
@@ -143,50 +143,50 @@ export default function OwnerPage() {
       </div>
 
       <div className="w-full md:w-8/12">
-        <p className="text-gray-600 mb-4 font-bold"> Welcome to your Room Owner Dashboard! 🏠</p>
-        <p className="text-gray-600 mb-4"> This is your central hub to manage everything about your listed rooms. Easily add new rooms, edit details, and update availability with just a few clicks. Track your bookings, monitor payment status, and stay informed about guest activity — all in real time. Simplify your management process and keep your listings active, attractive, and up-to-date effortlessly! 🌟</p>
+        <p className="text-muted-foreground mb-4 font-bold"> Welcome to your Room Owner Dashboard! 🏠</p>
+        <p className="text-muted-foreground mb-4"> This is your central hub to manage everything about your listed rooms. Easily add new rooms, edit details, and update availability with just a few clicks. Track your bookings, monitor payment status, and stay informed about guest activity — all in real time. Simplify your management process and keep your listings active, attractive, and up-to-date effortlessly! 🌟</p>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex items-center gap-4">
-          <div className="p-3 bg-purple-100 rounded-full"><BedDouble size={28} className="text-purple-600" /></div>
+        <div className="bg-gray-800 p-6 rounded-xl shadow-md border border-border flex items-center gap-4">
+          <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-full z-10"><BedDouble size={28} className="text-purple-600" /></div>
           <div>
-            <p className="text-gray-500 text-sm">Total Rooms</p>
-            <p className="text-3xl font-bold text-purple-800">{totalRooms}</p>
+            <p className="text-muted-foreground text-sm">Total Rooms</p>
+            <p className="text-3xl font-bold text-foreground">{totalRooms}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex items-center gap-4">
-          <div className="p-3 bg-green-100 rounded-full"><CheckCircle size={28} className="text-green-600" /></div>
+        <div className="bg-gray-800 p-6 rounded-xl shadow-md border border-border flex items-center gap-4">
+          <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-full z-10"><CheckCircle size={28} className="text-green-600" /></div>
           <div>
-            <p className="text-gray-500 text-sm">Available</p>
+            <p className="text-muted-foreground text-sm">Available</p>
             <p className="text-3xl font-bold text-green-700">{availableRooms}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 flex items-center gap-4">
-          <div className="p-3 bg-red-100 rounded-full"><XCircle size={28} className="text-red-500" /></div>
+        <div className="bg-gray-800 p-6 rounded-xl shadow-md border border-border flex items-center gap-4">
+          <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-full z-10"><XCircle size={28} className="text-red-500" /></div>
           <div>
-            <p className="text-gray-500 text-sm">Unavailable</p>
+            <p className="text-muted-foreground text-sm">Unavailable</p>
             <p className="text-3xl font-bold text-red-600">{totalRooms - availableRooms}</p>
           </div>
         </div>
       </div>
 
       {rooms.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
-          <BedDouble size={48} className="mx-auto text-gray-400" />
-          <p className="text-xl text-gray-500 mt-4">You havent listed any rooms yet.</p>
-          <p className="text-gray-400">Click the button above to get started.</p>
+        <div className="text-center py-20 bg-gray-800 rounded-xl border border-dashed border-border">
+          <BedDouble size={48} className="mx-auto text-muted-foreground" />
+          <p className="text-xl text-muted-foreground mt-4">You havent listed any rooms yet.</p>
+          <p className="text-muted-foreground/70">Click the button above to get started.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {rooms.map((room) => (
-            <div key={room._id} className="bg-white rounded-xl shadow-md p-4 flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-200 hover:shadow-lg transition-shadow">
+            <div key={room._id} className="bg-gray-800 rounded-xl shadow-md p-4 flex flex-col md:flex-row items-start md:items-center gap-4 border border-border hover:shadow-lg transition-shadow">
               <Image src={room.images[0] || '/image/login.png'} alt={room.nearByCentre} width={128} height={128} className="w-full md:w-32 h-32 object-cover rounded-lg" />
               <div className="flex-grow">
-                <p className="text-xl font-bold text-purple-800">{room.nearByCentre}</p>
-                <p className="text-sm text-gray-500">{room.address.street}, {room.address.city}</p>
-                <p className="text-lg font-semibold text-green-700 mt-1">₹{room.pricePerHour}/hour</p>
+                <p className="text-xl font-bold text-foreground">{room.nearByCentre}</p>
+                <p className="text-sm text-muted-foreground">{room.address.street}, {room.address.city}</p>
+                <p className="text-lg font-semibold text-green-600 mt-1">₹{room.pricePerHour}/hour</p>
               </div>
               <div className="flex items-center gap-4 self-center md:self-auto">
                 <Chip label={room.isAvailable ? "Available" : "Unavailable"} color={room.isAvailable ? "success" : "error"} />

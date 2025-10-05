@@ -106,7 +106,7 @@ export default function Navbar() {
                         handleLogout();
                       }}
                     >
-                      <div className="w-full flex items-center gap-4 px-8 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition">
+                      <div className="w-full flex items-center gap-4 px-8 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
                         <LogOut size={22} /> <span>Logout</span>
                       </div>
                     </MenuItem>

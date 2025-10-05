@@ -156,7 +156,7 @@ export default function NewRoom() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="px-6 md:px-10 bg-purple-100">
+      <form onSubmit={handleSubmit} className="px-6 md:px-10  text-foreground pt-20">
         <h1 className="font-semibold flex text-3xl md:text-5xl text-purple-600 pt-33 md:pt-24">
           <AddBoxOutlinedIcon
             style={{ fontSize: "3rem", fontWeight: "5rem", marginRight: "8px" }}
@@ -164,7 +164,7 @@ export default function NewRoom() {
           <span>ADD NEW ROOM</span>
         </h1>
         <p className="text-sm md:text-lg font-semibold mt-2 md:mt-5 w-full md:w-8/12">
-          If your room is near to any examination center, you can list your room
+          If your room is near an examination center, you can list your room
           here and it help those students who have really need to rent affordable
           room.
         </p>
@@ -172,7 +172,7 @@ export default function NewRoom() {
         {/* Upload Images */}
         <div className="flex flex-wrap gap-4 mt-6">
           <div className="w-full md:w-6/12">
-            <h3 className="text-purple-600 text-xl md:text-2xl font-semibold mt-6 pl-4">
+            <h3 className="text-primary text-xl md:text-2xl font-semibold mt-6 pl-4">
               Click and upload your room pictures
             </h3>
             <div className="justify-center flex flex-wrap gap-4 p-4">
@@ -180,7 +180,7 @@ export default function NewRoom() {
                 <div key={i} className="relative">
                   <label
                     htmlFor={`imageUpload-${i}`}
-                    className="w-28 aspect-square border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden"
+                    className="w-28 aspect-square border-2 border-dashed border-border rounded-xl flex items-center justify-center cursor-pointer overflow-hidden bg-card hover:bg-card/80"
                   >
                     {previews[i] ? (
                       <Image
@@ -191,7 +191,7 @@ export default function NewRoom() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-gray-500 text-sm text-center">
+                      <span className="text-muted-foreground text-sm text-center">
                         Click <br /> to upload
                       </span>
                     )}
@@ -214,11 +214,11 @@ export default function NewRoom() {
           <div className="w-full md:w-5/12 md:mt-8 flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="w-full sm:w-1/2">
-                <h4 className="text-black text-1xl font-semibold">
+                <h4 className="text-foreground text-1xl font-semibold">
                   Room owner full Name
                 </h4>
                 <input
-                  className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full"
+                  className="border-2 bg-transparent border-border rounded-md p-2 mt-2 w-full"
                   type="text"
                   placeholder="e.g., Ram lal yadav"
                   value={formData.roomOwner}
@@ -227,11 +227,11 @@ export default function NewRoom() {
                 />
               </div>
               <div className="w-full sm:w-1/2">
-                <h4 className="text-black text-1xl font-semibold">
+                <h4 className="text-foreground text-1xl font-semibold">
                   Distance (in meters)
                 </h4>
                 <input
-                  className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full"
+                  className="border-2 bg-transparent border-border rounded-md p-2 mt-2 w-full"
                   type="text"
                   value={formData.dist_btw_room_and_centre}
                   onChange={(e) =>
@@ -240,11 +240,11 @@ export default function NewRoom() {
                 />
               </div>
             </div>
-            <h4 className="text-black text-1xl font-semibold mt-4 ">
+            <h4 className="text-foreground text-1xl font-semibold mt-4 ">
               Nearby Centre
             </h4>
             <input
-              className="border-2 border-gray-400 rounded-md p-2 w-full"
+              className="border-2 bg-transparent border-border rounded-md p-2 w-full"
               type="text"
               placeholder="e.g., ION Digital Zone"
               value={formData.nearByCentre}
@@ -257,7 +257,7 @@ export default function NewRoom() {
         </div>
 
         {/* Address */}
-        <h3 className="text-purple-600 text-xl md:text-2xl font-semibold mt-6">
+        <h3 className="text-primary text-xl md:text-2xl font-semibold mt-6">
           Address
         </h3>
         <div className="flex flex-wrap gap-4 mt-3">
@@ -266,7 +266,7 @@ export default function NewRoom() {
             <input
               type="text"
               placeholder="Street Name"
-              className="border-2 border-gray-400 rounded-md w-full p-2 mt-2"
+              className="border-2 bg-transparent border-border rounded-md w-full p-2 mt-2"
               value={formData.street}
               onChange={(e) =>
                 setFormData({ ...formData, street: e.target.value })
@@ -278,7 +278,7 @@ export default function NewRoom() {
             <input
               type="text"
               placeholder="City Name"
-              className="border-2 border-gray-400 rounded-md w-full p-2 mt-2"
+              className="border-2 bg-transparent border-border rounded-md w-full p-2 mt-2"
               value={formData.city}
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             />
@@ -288,7 +288,7 @@ export default function NewRoom() {
             <input
               type="text"
               placeholder="State Name"
-              className="border-2 border-gray-400 rounded-md w-full p-2 mt-2"
+              className="border-2 bg-transparent border-border rounded-md w-full p-2 mt-2"
               value={formData.state}
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
             />
@@ -298,7 +298,7 @@ export default function NewRoom() {
             <input
               type="text"
               placeholder="PIN Code"
-              className="border-2 border-gray-400 rounded-md w-full p-2 mt-2"
+              className="border-2 bg-transparent border-border rounded-md w-full p-2 mt-2"
               value={formData.pincode}
               onChange={(e) =>
                 setFormData({ ...formData, pincode: e.target.value })
@@ -310,7 +310,7 @@ export default function NewRoom() {
         {/* Amenities + People + Cost + Description */}
         <div className="flex flex-wrap gap-4 mt-10">
           <div className="w-full md:w-3/12 pl-4">
-            <h3 className="text-purple-600 text-xl md:text-2xl font-semibold">
+            <h3 className="text-primary text-xl md:text-2xl font-semibold">
               Amenities
             </h3>
             {["Wifi", "Fan", "AC", "Parking"].map((a) => (
@@ -321,18 +321,18 @@ export default function NewRoom() {
                   checked={formData.amenities.includes(a)}
                   onChange={() => handleCheckbox(a)}
                 />
-                <span className="ml-2 text-gray-700">{a}</span>
+                <span className="ml-2 text-foreground">{a}</span>
               </div>
             ))}
           </div>
 
           <div className="w-full md:w-4/12">
             <div>
-              <h3 className="text-purple-600 text-xl md:text-2xl font-semibold">
+              <h3 className="text-primary text-xl md:text-2xl font-semibold">
                 No of people
               </h3>
               <input
-                className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full md:w-[265px]"
+                className="border-2 bg-transparent border-border rounded-md p-2 mt-2 w-full md:w-[265px]"
                 type="text"
                 placeholder="No of people"
                 value={formData.noOfPeople}
@@ -342,11 +342,11 @@ export default function NewRoom() {
               />
             </div>
             <div>
-              <h3 className="text-purple-600 text-xl md:text-2xl font-semibold mt-6">
+              <h3 className="text-primary text-xl md:text-2xl font-semibold mt-6">
                 Cost according per hour
               </h3>
               <input
-                className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full md:w-[265px]"
+                className="border-2 bg-transparent border-border rounded-md p-2 mt-2 w-full md:w-[265px]"
                 type="text"
                 placeholder="Cost according per hour"
                 value={formData.pricePerHour}
@@ -358,12 +358,12 @@ export default function NewRoom() {
           </div>
 
           <div className="w-full md:w-3/12">
-            <h3 className="text-purple-600 text-xl md:text-2xl font-semibold">
+            <h3 className="text-primary text-xl md:text-2xl font-semibold">
               Description
             </h3>
             <textarea
               rows={6}
-              className="border-2 border-gray-400 rounded-md p-2 mt-2 w-full"
+              className="border-2 bg-transparent border-border rounded-md p-2 mt-2 w-full"
               placeholder="Description"
               value={formData.description}
               onChange={(e) =>
