@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -7,9 +9,9 @@ const Footer = () => {
         
         {/* Brand / About Section */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Dream Destinations</h2>
+          <h2 className="text-xl font-semibold mb-4">Student Stay</h2>
           <p className="text-gray-400">
-            Explore the most beautiful places around the world. Plan your dream getaway with us.
+            Find the comfort of your home at affordable prices. Explore our wide range of student accommodations tailored to your needs.
           </p>
         </div>
 
@@ -17,10 +19,10 @@ const Footer = () => {
         <div>
           <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
           <ul className="space-y-2">
-            <li><a href="#" className="text-gray-300 hover:text-white">Home</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-white">Destinations</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-white">Blog</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-white">Contact</a></li>
+            <li><Link href="/" className="text-gray-300 hover:text-white">Home</Link></li>
+            <li><Link href="/dashboard" className="text-gray-300 hover:text-white">Dashboard</Link></li>
+            <li><Link href="/rooms" className="text-gray-300 hover:text-white">Rooms</Link></li>
+            <li><Link href="/owner" className="text-gray-300 hover:text-white">owner</Link></li>
           </ul>
         </div>
 
@@ -43,7 +45,7 @@ const Footer = () => {
       </div>
 
       <div className="text-center text-gray-500 mt-10 text-sm">
-        © {new Date().getFullYear()} Dream Destinations. All rights reserved.
+        © {new Date().getFullYear()} StayNest. All rights reserved.
       </div>
     </footer>
   );

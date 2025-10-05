@@ -231,23 +231,23 @@ export default function Home() {
           <div className='flex flex-wrap w-full justify-center mt-5 md:mt-15'>
             <div data-aos="zoom-in" data-aos-delay="900" className='h-[120px] md:h-[200px] w-[120px] md:w-[200px] flex flex-col items-center justify-center mr-4 mt-4 rounded-2xl bg-purple-400 hover:shadow-xl transition-shadow duration-300'>
               <Image width="94" height="94" src="https://img.icons8.com/3d-fluency/94/money-bag.png" alt="Affordable Price Icon" />
-              <p className="text-xl font-bold text-white">Affordable Price</p>
+              <p className="text-sm md:text-xl font-semibold md:font-bold text-white">Affordable Price</p>
             </div>
             <div data-aos="zoom-in" data-aos-delay="600" className='h-[120px] md:h-[200px] w-[120px] md:w-[200px] flex flex-col items-center justify-center mr-4 mt-4 rounded-2xl bg-purple-400 hover:shadow-xl transition-shadow duration-300'>
               <Image width="94" height="94" src="https://img.icons8.com/3d-fluency/94/sand-clock-1.png" alt="Time Saving Icon" />
-              <p className="text-xl font-bold text-white">Time Saving</p>
+              <p className="text-sm md:text-xl font-semibold md:font-bold text-white">Time Saving</p>
             </div>
             <div data-aos="zoom-in" data-aos-delay="300" className='h-[120px] md:h-[200px] w-[120px] md:w-[200px] flex flex-col items-center justify-center mr-4 mt-4 rounded-2xl bg-purple-400 hover:shadow-xl transition-shadow duration-300'>
               <Image width="94" height="94" src="https://img.icons8.com/3d-fluency/94/bed.png" alt="Comfortable Stay Icon" />
-              <p className="text-xl font-bold text-white">Comfortable Stay</p>
+              <p className="text-sm md:text-xl font-semibold md:font-bold text-white">Comfortable Stay</p>
             </div>
             <div data-aos="zoom-in" data-aos-delay="600" className='h-[120px] md:h-[200px] w-[120px] md:w-[200px] flex flex-col items-center justify-center mr-4 mt-4 rounded-2xl bg-purple-400 hover:shadow-xl transition-shadow duration-300'>
               <Image width="94" height="94" src="https://img.icons8.com/3d-fluency/94/shower.png" alt="Shower Icon" />
-              <p className="text-xl font-bold text-white">Shower</p>
+              <p className="text-sm md:text-xl font-semibold md:font-bold text-white">Shower</p>
             </div>
             <div data-aos="zoom-in" data-aos-delay="900" className='h-[120px] md:h-[200px] w-[120px] md:w-[200px] flex flex-col items-center justify-center mr-4 mt-4 rounded-2xl bg-purple-400 hover:shadow-xl transition-shadow duration-300'>
               <Image width="94" height="94" src="https://img.icons8.com/3d-fluency/94/real-estate.png" alt="Shelter Icon" />
-              <p className="text-xl font-bold text-white">Shelter</p>
+              <p className="text-sm md:text-xl font-semibold md:font-bold text-white">Shelter</p>
             </div>
 
           </div>

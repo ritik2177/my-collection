@@ -69,7 +69,7 @@ export async function PUT(req: Request, context: { params: Promise<IParams> }) {
         await transporter.sendMail({
           from: process.env.EMAIL_USER,
           to: user.email,
-          subject: `Booking Confirmed for ${room.nearByCentre}! ✅`,
+          subject: `Booking Confirmed for Your room near by ${room.nearByCentre} exam center! ✅`,
           html: `<h1>Hi ${user.username},</h1><p>Your booking for the room "<b>${room.nearByCentre}</b>" is confirmed.</p><p><b>Booking ID:</b> ${populatedBooking._id}</p><p>Thank you!</p>\n ${dateTime}`,
         }).catch(e => console.error("Failed to send confirmation email to user:", e));
       }
@@ -79,7 +79,7 @@ export async function PUT(req: Request, context: { params: Promise<IParams> }) {
         await transporter.sendMail({
           from: process.env.EMAIL_USER,
           to: owner.email,
-          subject: `New Booking for Your Room: ${room.nearByCentre} 🏡`,
+          subject: `New Booking for Your Room which near by: ${room.nearByCentre} exam center🏡`,
           html: `<h1>Hi ${owner.username},</h1><p>You have a new booking for your room "<b>${room.nearByCentre}</b>" from a user named <b>${populatedBooking.fullName}</b>.</p>\n ${dateTime}`,
         }).catch(e => console.error("Failed to send notification email to owner:", e));
       }
