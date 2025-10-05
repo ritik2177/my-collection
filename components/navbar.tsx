@@ -47,7 +47,7 @@ export default function Navbar() {
             Contact
           </a>
           <Link
-            href="/user-profile"
+            href="/dashboard"
             className="px-4 py-2 rounded-md transition-colors duration-200"
           >
             Dashboard
@@ -152,21 +152,21 @@ export default function Navbar() {
               Contact
             </a>
             <a
-              href="/user-profile"
+              href="/dashboard"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
-              User profile
+              Dashboard
             </a>
             <a
-              href="/booked-room"
+              href="/owner"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
-              Booked room
+              Owner
             </a>
             <a
-              href="/new-room"
+              href="/owner/new-room"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >

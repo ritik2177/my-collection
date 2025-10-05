@@ -132,11 +132,11 @@ export default function OwnerPage() {
   }
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 sm:pt-20 lg:p-8 lg:pt-20 bg-gray-50 min-h-full">
+    <div className="container mx-auto p-4 sm:p-6 pt-20 sm:pt-20 lg:p-8  lg:pt-20 bg-gray-50 min-h-full">
       
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-purple-800">My Rooms</h1>
-        <Link href="/owner/new-room" className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition shadow-md flex items-center gap-2">
+        <h1 className="text-2xl md:text-4xl font-bold text-purple-800">My Rooms</h1>
+        <Link href="/owner/new-room" className="px-4 md:px-6 py-2 md:py-3 bg-purple-600 text-white text-sm md:text-xl rounded-lg hover:bg-purple-700 transition shadow-md flex items-center gap-2">
           <BedDouble size={20} />
           <span>List a New Room</span>
         </Link>

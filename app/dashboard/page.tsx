@@ -78,7 +78,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="container w-full mx-auto p-4 sm:p-6 lg:p-8 lg:pt-30 flex flex-col md:flex-row gap-6">
+    <div className="container w-full mx-auto p-4 pt-20 sm:p-6 lg:p-8 lg:pt-30 flex flex-col md:flex-row gap-6">
       <div className="w-full md:w-5/12">
       <div>
         <h1 className="text-4xl font-extrabold text-purple-600">Dashboard</h1>
@@ -114,12 +114,12 @@ export default function DashboardPage() {
       </div>
 
         {/* Owner Card */}
-      <div className="mt-8 bg-white border border-purple-200 rounded-2xl shadow-lg p-6 flex items-center justify-between hover:shadow-xl transition-shadow duration-300">
+      <div className="mt-8 bg-white border border-purple-200 rounded-2xl shadow-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between hover:shadow-xl transition-shadow duration-300">
         <div>
           <h3 className="text-xl font-bold text-purple-800">Manage Your Rooms</h3>
           <p className="text-gray-600 mt-1">List a new room or manage your existing properties from the owner dashboard.</p>
         </div>
-        <Link href="/owner" className="flex-shrink-0 ml-4 px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-md">
+        <Link href="/owner" className="flex-shrink-0 ml-2 md:ml-4 mt-4 md:mt-1 px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-md">
           <span>Owner Page</span>
           <ChevronRight size={20} />
         </Link>
