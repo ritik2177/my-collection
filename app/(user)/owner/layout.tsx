@@ -10,6 +10,7 @@ import {
 const sidebarItems = [
   { href: "/owner", icon: HomeIcon, label: "Owner" },
   { href: "/owner/new-room", label: "New room" },
+  { href: "/owner/booking", label: "Bookings" },
 
 ];
 

@@ -21,7 +21,22 @@ export async function GET(
       return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
     }
 
-    const bookings = await Booking.find({ userId }).sort({ createdAt: -1 }).populate('roomId', 'nearByCentre');
+    // Atomically find and update the status of all ended bookings for the user.
+    // This is more efficient and avoids validation errors on old documents.
+    const now = new Date();
+    await Booking.updateMany(
+      { 
+        userId: userId, 
+        status: 'booked', 
+        paymentId: { $exists: true, $ne: null },
+        endTime: { $lt: now } 
+      },
+      { $set: { status: 'completed' } }
+    );
+
+    const bookings = await Booking.find({ userId })
+      .sort({ createdAt: -1 })
+      .populate('roomId', 'nearByCentre');
 
     return NextResponse.json({ success: true, bookings }, { status: 200 });
   } catch (error) {

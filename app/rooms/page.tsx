@@ -92,7 +92,7 @@ function RoomsPageContent() {
         return <div className=" items-center justify-center flex h-screen">Loading...</div>
     }
     return (
-  <div className="w-full min-h-screen bg-gray-100 p-1 md:p-4 flex flex-col items-center pt-20">
+  <div className="w-full min-h-screen bg-gray-100 p-0 md:p-4 flex flex-col items-center pt-20">
     {/* Rooms + Filters Container */}
     <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
       {/* Filter Section */}

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import PayButton from '@/components/RazorpayButton';
 import Link from 'next/link';
-import { Calendar, Clock, CheckCircle, IndianRupeeIcon, Lock, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, IndianRupeeIcon, Lock, ChevronRight, BookUser } from 'lucide-react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, CircularProgress } from '@mui/material';
 import { IBooking } from "@/schema/booking";
 
@@ -96,7 +96,7 @@ export default function DashboardPage() {
         If you’re a room owner, you can list new rooms, manage existing ones, and update their availability status effortlessly.</p>
         <p className="text-gray-600 mt-2 text-sm italic"> Stay organized, stay in control — your dashboard, your way! 🌟</p>
       </div>
-      <div className="mt-8 flex flex-wrap w-full">
+      <div className="mt-8 flex justify-center w-full flex-col md:flex-row">
       <button 
       className="px-20 py-3 mt-6 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
       onClick={() => signOut({ callbackUrl: "/" })}
@@ -114,15 +114,23 @@ export default function DashboardPage() {
       </div>
 
         {/* Owner Card */}
-      <div className="mt-8 bg-white border border-purple-200 rounded-2xl shadow-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between hover:shadow-xl transition-shadow duration-300">
+      <div className="mt-8 bg-white border border-purple-200 rounded-2xl shadow-lg p-6 flex flex-col items-start md:items-center justify-between hover:shadow-xl transition-shadow duration-300">
         <div>
           <h3 className="text-xl font-bold text-purple-800">Manage Your Rooms</h3>
-          <p className="text-gray-600 mt-1">List a new room or manage your existing properties from the owner dashboard.</p>
+          <p className="text-gray-600 mt-1">List new rooms or manage existing properties.</p>
         </div>
-        <Link href="/owner" className="flex-shrink-0 ml-2 md:ml-4 mt-4 md:mt-1 px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-md">
+        <div className="flex flex-wrap gap-2 mt-4 w-full md:w-auto">
+        <Link href="/owner" className="flex-shrink-0 px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-md">
           <span>Owner Page</span>
           <ChevronRight size={20} />
         </Link>
+        <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
+          <Link href="/owner/bookings" className="flex-shrink-0 px-5 py-2.5 bg-purple-100 text-purple-700 font-semibold rounded-lg hover:bg-purple-200 transition-colors flex items-center gap-2 shadow-sm">
+            <span>View Bookings</span>
+            <BookUser size={20} />
+          </Link>
+        </div>
+        </div>
         </div>
       </div>
       <div className="w-full md:w-7/12">
@@ -163,12 +171,16 @@ export default function DashboardPage() {
                     </div>
         
                     <div className="flex-shrink-0" onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
-                      {booking.paymentId ? (
-                        <span className="inline-flex items-center text-xs font-semibold bg-green-100 text-green-700 px-2.5 py-1 rounded-full">
-                          <CheckCircle className="w-4 h-4 mr-1.5" /> Confirmed
+                      {!booking.paymentId ? (
+                        <PayButton amount={booking.totalCost} bookingId={String(booking._id)} />
+                      ) : booking.status === 'completed' ? (
+                        <span className="inline-flex items-center text-xs font-semibold bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full">
+                          <CheckCircle className="w-4 h-4 mr-1.5" /> Completed
                         </span>
                       ) : (
-                        <PayButton amount={booking.totalCost} bookingId={String(booking._id)} />
+                        <span className="inline-flex items-center text-xs font-semibold bg-green-100 text-green-700 px-2.5 py-1 rounded-full">
+                          <CheckCircle className="w-4 h-4 mr-1.5" /> Booked
+                        </span>
                       )}
                     </div>
                   </div>

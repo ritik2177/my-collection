@@ -320,7 +320,7 @@ export default function RoomDetailPage() {
           <h3 className="text-4xl font-bold text-purple-800 font-sans">{room.nearByCentre}</h3>
           <h5 className="text-lg mt-2 text-gray-600 font-sans">Address: {room.address.street}, {room.address.city}, {room.address.state}, {room.address.pincode}</h5>
         </div>
-        <div className="mt-6 flex flex-col gap-2">
+        <div className="mt-6 flex flex-col justify-center gap-2">
           <button
             onClick={() => {
               if (status !== 'authenticated') {
@@ -344,6 +344,7 @@ export default function RoomDetailPage() {
           </button>
         </div>
       </div>
+      
       {/* Amenities */}
       <div className="mt-8">
         <h4 className="text-2xl font-bold text-purple-800 mb-4">What this place offers</h4>
@@ -368,8 +369,16 @@ export default function RoomDetailPage() {
             <span className="text-sm font-medium text-gray-700 text-center">{room.dist_btw_room_and_centre}m away</span>
           </div>
         </div>
+        {/* About this room/Description */}
+      {room.description && (
+        <div className="mt-8 border-t border-gray-200 pt-6">
+          <h4 className="text-2xl font-bold text-purple-800 mb-3">About this room</h4>
+          <p className="text-gray-700 leading-relaxed">{room.description}</p>
+        </div>
+      )}
+
         <h3 className="text-2xl font-bold text-purple-800 mt-6 mb-4 text-center">Reviews</h3>
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap justify-center">
           {room.reviews && room.reviews.length > 0 ? (
             room.reviews.map((review: IPopulatedReview) => (
 
@@ -454,8 +463,8 @@ export default function RoomDetailPage() {
 
       {/* Booking Modal */}
       {isBookingModalOpen && (
-        <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl w-auto h-auto relative">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
             <button onClick={() => { setIsBookingModalOpen(false); setBookingId(null); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
               <X className="w-6 h-6" />
             </button>

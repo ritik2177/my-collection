@@ -40,17 +40,17 @@ export default function Navbar() {
           >
             Rooms
           </Link>
-          <a
-            href="#contact"
-            className="px-4 py-2 rounded-md transition-colors duration-200"
-          >
-            Contact
-          </a>
           <Link
             href="/dashboard"
             className="px-4 py-2 rounded-md transition-colors duration-200"
           >
             Dashboard
+          </Link>
+          <Link
+            href="/about-us"
+            className="px-4 py-2 rounded-md transition-colors duration-200"
+          >
+            About Us
           </Link>
         </div>
 
