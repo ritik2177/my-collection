@@ -144,34 +144,34 @@ export default function Navbar() {
             >
               Rooms
             </Link>
-            <a
-              href="#contact"
+            <Link
+              href="/about-us"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
-              Contact
-            </a>
-            <a
+              About us
+            </Link>
+            <Link
               href="/dashboard"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
               Dashboard
-            </a>
-            <a
+            </Link>
+            <Link
               href="/owner"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
               Owner
-            </a>
-            <a
+            </Link>
+            <Link
               href="/owner/new-room"
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md hover:bg-blue-100 transition-colors"
             >
               Add room
-            </a>
+            </Link>
 
             {!session ? (
               <button
