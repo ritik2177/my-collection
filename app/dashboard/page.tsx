@@ -125,7 +125,7 @@ export default function DashboardPage() {
           <ChevronRight size={20} />
         </Link>
         <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
-          <Link href="/owner/bookings" className="flex-shrink-0 px-5 py-2.5 bg-purple-100 text-purple-700 font-semibold rounded-lg hover:bg-purple-200 transition-colors flex items-center gap-2 shadow-sm">
+          <Link href="/owner/booking" className="flex-shrink-0 px-5 py-2.5 bg-purple-100 text-purple-700 font-semibold rounded-lg hover:bg-purple-200 transition-colors flex items-center gap-2 shadow-sm">
             <span>View Bookings</span>
             <BookUser size={20} />
           </Link>
