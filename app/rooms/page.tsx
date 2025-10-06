@@ -14,6 +14,8 @@ import Link from "next/link";
 import React from 'react'
 import { FanIcon, AirVentIcon, WifiIcon } from "lucide-react";
 import { IRoom } from "@/schema/room";
+import { BorderBeam } from "@/components/ui/border-beam"
+
 
 
 const StudentStayMap = dynamic(() => import("@/components/StudentStayMap"), {
@@ -147,7 +149,14 @@ function RoomsPageContent() {
     </div>
 
     {/* Rooms + Filters Container */}
-    <div className="w-full max-w-6xl rounded-xl shadow-lg shadow-purple-500/20 border-2 border-purple-600 overflow-hidden flex flex-col md:flex-row">
+    <div className="relative w-full max-w-6xl rounded-xl shadow-lg shadow-purple-500/20 border-1 border-purple-600 overflow-hidden flex flex-col md:flex-row">
+       <BorderBeam
+                  duration={12}
+                  delay={300}
+                  size={1000}
+                  borderWidth={2}
+                  className="rounded-2xl"
+                />
        {/* Filter Section */}
        <div className={`${isFilterVisible ? 'block' : 'hidden'} md:block w-full md:w-80 border-b md:border-b-0 md:border-r border-border p-6 bg-gray-800`}>
         <h3 className="text-xl font-bold mb-4">Filters</h3>
@@ -212,7 +221,7 @@ function RoomsPageContent() {
                 }
               }}
               key={String(room._id)}
-              className="flex flex-col sm:flex-row w-full bg-gray-800 shadow-md rounded-2xl overflow-hidden border hover:shadow-xl transition-shadow duration-300"
+              className="relative flex flex-col sm:flex-row w-full bg-gray-800 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 border"
             >
               {/* Image */}
               <div className="flex-shrink-0 w-full sm:w-1/3 h-64 overflow-hidden">
@@ -288,11 +297,26 @@ function RoomsPageContent() {
                   <p className="text-lg font-semibold text-purple-700">
                     ₹{room.pricePerHour} / hour
                   </p>
-                  <button className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300">
+                  <button className="relative text-white px-5 py-2 rounded-lg transition-colors duration-300">
                     Book Now
+                    <BorderBeam
+                  duration={12}
+                  delay={300}
+                  size={150}
+                  borderWidth={2}
+                  className="from-transparent via-purple-500 to-transparent rounded-2xl"
+                />
                   </button>
                 </div>
+                
               </div>
+              <BorderBeam
+                  duration={12}
+                  delay={300}
+                  size={450}
+                  borderWidth={2}
+                  className="from-transparent via-purple-500 to-transparent rounded-2xl"
+                />
             </Link>
           ))
         ) : (

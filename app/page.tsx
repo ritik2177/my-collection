@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 export default function Home() {
   const router = useRouter();
@@ -50,8 +51,15 @@ export default function Home() {
           </div>
 
           {/* Search Section */}
-          <div data-aos="fade-up" data-aos-delay="1200" className="w-full max-w-3xl bg-white/70 dark:bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-lg">
-           <div className="flex flex-col md:flex-row gap-4 w-full">
+          <div data-aos="fade-up" data-aos-delay="1200" className="relative w-full max-w-3xl bg-white/70 dark:bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-lg">
+            <BorderBeam
+              duration={12}
+              delay={300}
+              size={450}
+              borderWidth={3}
+              className="from-transparent via-purple-500 to-transparent "
+            />
+            <div className="flex flex-col md:flex-row gap-4 w-full">
 
               <input
                 type="text"
@@ -59,7 +67,7 @@ export default function Home() {
                 className="w-full p-3 rounded-md border border-gray-300 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={center}
                 onChange={(e) => setCenter(e.target.value)}
-                
+
               />
 
               <input
@@ -138,7 +146,7 @@ export default function Home() {
                 {openPanel === "panel1" && (
                   <div className="p-4 text-gray-700 text-sm md:text-1 bg-purple-50">
                     We are a dedicated platform created especially for students who
-                    travel across cities to appear for competitive and University 
+                    travel across cities to appear for competitive and University
                     exams.  We understand how stressful it can be to find a place to
                     rest before an important test..
                   </div>

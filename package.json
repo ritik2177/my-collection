@@ -32,7 +32,7 @@
     "lucide-react": "^0.536.0",
     "material-ui-popup-state": "^5.3.6",
     "mongoose": "^8.17.0",
-    "motion": "^12.23.12",
+    "motion": "^12.23.22",
     "multer": "^2.0.2",
     "next": "15.4.4",
     "next-auth": "^4.24.11",
