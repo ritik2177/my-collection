@@ -48,7 +48,7 @@ export default function Login({ handleClose }: { handleClose: () => void }) {
         <input
           name="email"
           placeholder="Email or Username"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 border-purple-300 focus:ring-purple-600"
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 border-purple-300 focus:ring-purple-600 text-purple-600"
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
@@ -57,7 +57,7 @@ export default function Login({ handleClose }: { handleClose: () => void }) {
           name="password"
           autoComplete="off"
           placeholder="Password"
-          className="w-full px-4 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+          className="w-full px-4 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-purple-600"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 

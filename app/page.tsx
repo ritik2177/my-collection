@@ -56,7 +56,7 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Enter your center name"
-                className="w-full p-3 rounded-md border border-gray-300 placeholder-gray-500 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 rounded-md border border-gray-300 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={center}
                 onChange={(e) => setCenter(e.target.value)}
                 
@@ -65,7 +65,7 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Enter your city"
-                className="w-full p-3 rounded-md border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 rounded-md border border-gray-300 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
@@ -73,7 +73,7 @@ export default function Home() {
               <input
                 type="number"
                 placeholder="Number of Guest"
-                className="w-full p-3 rounded-md border border-gray-300 placeholder-gray-500 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 rounded-md border border-gray-300 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={guests}
                 onChange={(e) => setGuests(e.target.value)}
               />
@@ -105,7 +105,7 @@ export default function Home() {
         <p
           data-aos="fade-up"
           data-aos-delay="300"
-          className="text-center text-gray-600 mt-4 md:px-30"
+          className="text-center text-white text-sm md:text-1 mt-4 md:px-30"
         >
           We are a dedicated platform created especially for students who travel
           across cities to appear for competitive and University exams. We
@@ -136,7 +136,7 @@ export default function Home() {
                   <span>{openPanel === "panel1" ? "−" : "+"}</span>
                 </button>
                 {openPanel === "panel1" && (
-                  <div className="p-4 text-gray-700 bg-purple-50">
+                  <div className="p-4 text-gray-700 text-sm md:text-1 bg-purple-50">
                     We are a dedicated platform created especially for students who
                     travel across cities to appear for competitive and University 
                     exams.  We understand how stressful it can be to find a place to
